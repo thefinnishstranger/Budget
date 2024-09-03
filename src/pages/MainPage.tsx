@@ -31,9 +31,9 @@ export default function MainPage() {
   return (
     <>
       <div>
-        <p className="main">
+        <header className="main text-4xl font-bold tracking-tight">
           Welcome to Budget
-        </p>
+        </header>
       </div>
       <div className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
