@@ -28,12 +28,18 @@ const features = [
 ]
 
 export default function MainPage() {
+
   return (
     <>
-      <div>
-        <header className="main text-4xl font-bold tracking-tight">
-          Welcome to Budget
-        </header>
+      <div className='flex justify-center h-screen items-center bg-background5 bg-auto'>
+        <div className="flex flex-col text-center">
+          <header className="text-5xl font-extrabold tracking-tight">
+            Welcome to Budget!
+          </header>
+          <p className='text-xl mt-5'>
+            Take charge of your finances with ease and confidence.
+          </p>
+        </div>
       </div>
       <div className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -61,6 +67,12 @@ export default function MainPage() {
             </dl>
           </div>
         </div>
+      </div>
+      <div>
+        biggest wealth killers
+      </div>
+      <div>
+        stats on finance tracking
       </div>
     </>
   )
