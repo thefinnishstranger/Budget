@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage'
 import AccountPage from './pages/AccountPage'
 import NavBar from './components/NavBar.tsx'
 import About from './pages/About.tsx'
+import SignUpPage from './pages/SignUpPage.tsx'
 
 
 const MainRouter: React.FC = () => {
@@ -16,6 +17,7 @@ const MainRouter: React.FC = () => {
               <Route path="/" element={<MainPage />} />
               <Route path="/calculator" element={<BudgetCalculator />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
               <Route path="/account" element={<AccountPage />} />
               <Route path="/about" element={<About />} />
             </Routes>

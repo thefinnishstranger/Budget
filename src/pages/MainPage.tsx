@@ -1,4 +1,5 @@
-import { LockClosedIcon, ChartBarIcon, CurrencyDollarIcon, CalculatorIcon } from '@heroicons/react/24/outline'
+import { LockClosedIcon, ChartBarIcon, CurrencyDollarIcon, CalculatorIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
+import { useNavigate } from 'react-router'
 
 const features = [
   {
@@ -28,19 +29,73 @@ const features = [
 ]
 
 export default function MainPage() {
+  const navigate = useNavigate()
+
+  const aboutUsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    navigate('/about')
+  }
+
+  const startClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    navigate('/signup')
+  }
 
   return (
     <>
-      <div className='flex justify-center h-screen items-center bg-background5 bg-auto'>
-        <div className="flex flex-col text-center">
+      <div className='flex justify-between items-center h-screen px-6'>
+        <div className="flex flex-col w-full md:w-1/2">
           <header className="text-5xl font-extrabold tracking-tight">
-            Welcome to Budget!
+            Empower Your Financial Journey
           </header>
           <p className='text-xl mt-5'>
-            Take charge of your finances with ease and confidence.
+            Take control of your finances effortlessly and make informed decisions with our powerful tools.
           </p>
+          <div className='flex mt-8'>
+            <button
+              type='submit'
+              onClick={startClick}
+              className="py-3 bg-blue-700 text-white font-bold rounded w-1/3 md:w-1/5 transform hover:bg-blue-600 transition duration-200 ease-in-out"
+            >
+              Get started
+            </button>
+            <button
+              type='submit'
+              onClick={aboutUsClick}
+              className='flex items-center mx-5 px-4 py-2 bg-transparent text-black font-semibold'
+            >
+              About us
+              <ArrowRightIcon className='h-5 w-5 ml-2' />
+            </button>
+          </div>
+        </div>
+
+        <div className="hidden md:w-1/2 md:flex md:justify-end">
+          <img
+            src="/background4.jpg"
+            alt="Tilted Image"
+            className="transform"
+          />
         </div>
       </div>
+
+      <div className='bg-green-500 h-auto p-10 flex flex-col md:flex-row justify-start items-center tracking-tight'>
+        <div className='flex flex-col text-black w-2/3'>
+          <p className='text-3xl font-bold'>
+            Did you know?
+          </p>
+          <p className='text-lg mt-3 font-light py-1'>
+            People with a budget feel significantly more in control, with 62% reporting this benefit. They also experience greater confidence, with 55% feeling this way, and a heightened sense of security, felt by 52%. On the other hand, those without a budget often feel less in control, with only 19% feeling secure, and are more likely to be worried or stressed, reported by 18% and 17% respectively.
+          </p>
+          <p className='text-lg mt-5 font-light py-1'>
+            Managing a budget can greatly improve your financial stability and enhance your overall sense of well-being.
+          </p>
+        </div>
+        <div className='flex flex-col w-1/3'>
+          maybe add a chart here?
+        </div>
+      </div>
+
       <div className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
@@ -61,13 +116,16 @@ export default function MainPage() {
                     </div>
                     {feature.name}
                   </dt>
-                  <dd className="mt-2 text-base leading-7 text-gray-600">{feature.description}</dd>
+                  <dd className="mt-2 text-base leading-7 text-gray-600">
+                    {feature.description}
+                  </dd>
                 </div>
               ))}
             </dl>
           </div>
         </div>
       </div>
+
       <div>
         biggest wealth killers
       </div>
