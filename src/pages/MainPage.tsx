@@ -79,20 +79,49 @@ export default function MainPage() {
         </div>
       </div>
 
-      <div className='bg-green-500 h-auto p-10 flex flex-col md:flex-row justify-start items-center tracking-tight'>
-        <div className='flex flex-col text-black w-2/3'>
-          <p className='text-3xl font-bold'>
-            Did you know?
-          </p>
-          <p className='text-lg mt-3 font-light py-1'>
-            People with a budget feel significantly more in control, with 62% reporting this benefit. They also experience greater confidence, with 55% feeling this way, and a heightened sense of security, felt by 52%. On the other hand, those without a budget often feel less in control, with only 19% feeling secure, and are more likely to be worried or stressed, reported by 18% and 17% respectively.
-          </p>
-          <p className='text-lg mt-5 font-light py-1'>
-            Managing a budget can greatly improve your financial stability and enhance your overall sense of well-being.
-          </p>
-        </div>
-        <div className='flex flex-col w-1/3'>
-          maybe add a chart here?
+      <div className='bg-green-500 h-auto p-10'>
+        <p className='text-center text-4xl font-bold tracking-tight mt-10'>
+          Gain Control of Your Finances
+        </p>
+        <p className='text-center text-lg mt-6 mx-auto max-w-3xl'>
+          Achieve long-term financial stability and security by implementing a well-structured budgeting plan that helps you manage your income, control your expenses, and build a solid foundation for future success.
+        </p>
+        <p className='text-center font-semibold text-2xl mt-14 tracking-tight'>
+          Our users report the following benefits after using a budget:
+        </p>
+        <div className='grid grid-cols-1 md:grid-cols-4 gap-6 mt-8 text-center'>
+          <div className='bg-green-600 rounded-lg p-4'>
+            <p className='font-extrabold text-2xl'>
+              62%
+            </p>
+            <p className='mt-2 text-lg'>
+              Feel more confident
+            </p>
+          </div>
+          <div className='bg-green-600 rounded-lg p-4'>
+            <p className='font-extrabold text-2xl'>
+              80%
+            </p>
+            <p className='mt-2 text-lg'>
+              Report less stress
+            </p>
+          </div>
+          <div className='bg-green-600 rounded-lg p-4'>
+            <p className='font-extrabold text-2xl'>
+              45%
+            </p>
+            <p className='mt-2 text-lg'>
+              Reach financial goals
+            </p>
+          </div>
+          <div className='bg-green-600 rounded-lg p-4'>
+            <p className='font-extrabold text-2xl'>
+              30%
+            </p>
+            <p className='mt-2 text-lg'>
+              Increase savings
+            </p>
+          </div>
         </div>
       </div>
 
