@@ -79,7 +79,7 @@ export default function MainPage() {
         </div>
       </div>
 
-      <div className='bg-green-500 h-auto p-10'>
+      <div className='bg-slate-100 h-auto py-24 pr-10 pl-10'>
         <p className='text-center text-4xl font-bold tracking-tight mt-10'>
           Gain Control of Your Finances
         </p>
@@ -89,8 +89,8 @@ export default function MainPage() {
         <p className='text-center font-semibold text-2xl mt-14 tracking-tight'>
           Our users report the following benefits after using a budget:
         </p>
-        <div className='grid grid-cols-1 md:grid-cols-4 gap-6 mt-8 text-center'>
-          <div className='bg-green-600 rounded-lg p-4'>
+        <div className='grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 text-center'>
+          <div className='bg-slate-200 rounded-lg p-4'>
             <p className='font-extrabold text-2xl'>
               62%
             </p>
@@ -98,7 +98,7 @@ export default function MainPage() {
               Feel more confident
             </p>
           </div>
-          <div className='bg-green-600 rounded-lg p-4'>
+          <div className='bg-slate-200 rounded-lg p-4'>
             <p className='font-extrabold text-2xl'>
               80%
             </p>
@@ -106,7 +106,7 @@ export default function MainPage() {
               Report less stress
             </p>
           </div>
-          <div className='bg-green-600 rounded-lg p-4'>
+          <div className='bg-slate-200 rounded-lg p-4'>
             <p className='font-extrabold text-2xl'>
               45%
             </p>
@@ -114,7 +114,7 @@ export default function MainPage() {
               Reach financial goals
             </p>
           </div>
-          <div className='bg-green-600 rounded-lg p-4'>
+          <div className='bg-slate-200 rounded-lg p-4'>
             <p className='font-extrabold text-2xl'>
               30%
             </p>
@@ -127,39 +127,36 @@ export default function MainPage() {
 
       <div className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Our Mission
-            </p>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              We are dedicated to helping you gain control over your finances with tools to track, analyze, and manage your budget efficiently.
-            </p>
-          </div>
-          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
-            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-              {features.map((feature) => (
-                <div key={feature.name} className="relative pl-16">
-                  <dt className="text-base font-semibold leading-7 text-gray-900">
-                    <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-500">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-2xl lg:text-left lg:w-1/3">
+              <p className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Our Mission
+              </p>
+              <p className="mt-6 text-lg leading-8 text-gray-600 w-4/5">
+                We are dedicated to helping you gain control over your finances with tools to track, analyze, and manage your budget efficiently.
+              </p>
+            </div>
+            <div className="mt-16 lg:mt-0 lg:w-2/3">
+              <dl className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-2 lg:gap-x-16 lg:gap-y-16">
+                {features.map((feature) => (
+                  <div key={feature.name} className="flex items-start space-x-4">
+                    <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-lg bg-green-500">
                       <feature.icon aria-hidden="true" className="h-6 w-6 text-white" />
                     </div>
-                    {feature.name}
-                  </dt>
-                  <dd className="mt-2 text-base leading-7 text-gray-600">
-                    {feature.description}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+                    <div>
+                      <dt className="text-base font-semibold leading-7 text-gray-900">
+                        {feature.name}
+                      </dt>
+                      <dd className="mt-2 text-base leading-7 text-gray-600">
+                        {feature.description}
+                      </dd>
+                    </div>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div>
-        biggest wealth killers
-      </div>
-      <div>
-        stats on finance tracking
       </div>
     </>
   )
