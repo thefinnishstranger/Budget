@@ -1,14 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import ApexCharts from "apexcharts";
 
 const DonutChart = () => {
+  const chartRef = useRef<ApexCharts | null>(null);
+
   // Function to get chart options
   const getChartOptions = () => {
     return {
-      series: [35.1, 23.5, 2.4, 5.4],
-      colors: ["#1C64F2", "#16BDCA", "#FDBA8C", "#E74694"],
+      series: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100],
+      colors: [
+        "#1C64F2",  // Blue
+        "#16BDCA",  // Cyan
+        "#FDBA8C",  // Peach
+        "#E74694",  // Pink
+        "#F59E0B",  // Amber
+        "#84CC16",  // Lime Green
+        "#10B981",  // Teal
+        "#6366F1",  // Purple
+        "#F87171",  // Red
+        "#D97706",  // Orange
+        "#4B5563"   // Dark Gray
+      ],
       chart: {
-        height: 320,
+        height: 340,
         width: "100%",
         type: "donut",
       },
@@ -32,7 +46,7 @@ const DonutChart = () => {
                 fontFamily: "Inter, sans-serif",
                 formatter: function (w: any) {
                   const sum = w.globals.seriesTotals.reduce((a: number, b: number) => a + b, 0);
-                  return '$' + sum + 'k';
+                  return '$' + sum;
                 },
               },
               value: {
@@ -63,8 +77,19 @@ const DonutChart = () => {
   };
 
   useEffect(() => {
+    if (chartRef.current) {
+      chartRef.current.destroy();
+    }
+    
     const chart = new ApexCharts(document.getElementById("donut-chart"), getChartOptions());
+    chartRef.current = chart;
     chart.render();
+
+    return () => {
+      if (chartRef.current) {
+        chartRef.current.destroy();
+      }
+    };
   }, []);
 
   return (
