@@ -10,7 +10,7 @@ import SignUpPage from './pages/SignUpPage.tsx'
 
 const MainRouter: React.FC = () => {
   return (
-    <div>
+    <div className='min-h-screen'>
         <>
             <NavBar />
             <Routes>

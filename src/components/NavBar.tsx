@@ -48,7 +48,7 @@ export default function Example() {
                     href={item.href}
                     aria-current={item.current ? 'page' : undefined}
                     className={classNames(
-                      location.pathname === item.href ? 'bg-gray-100 text-black' : 'text-white transition-transform duration-300 transform hover:bg-green-800 hover:text-white hover:scale-105',
+                      location.pathname === item.href ? 'bg-gray-100 text-black' : 'text-white transition transform hover:bg-green-800 hover:text-white hover:scale-105 duration-300',
                       'rounded-md px-3 py-2 text-sm font-medium',
                     )}
                   >
