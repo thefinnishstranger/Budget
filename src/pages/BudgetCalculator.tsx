@@ -1,21 +1,33 @@
+import { useState } from "react"
 import CalculatorChart from "../components/calculatorChart"
 
-const inputs = [
-  { type: 'Income' },
-  { type: 'Savings' },
-  { type: 'Food' },
-  { type: 'Utilities' },
-  { type: 'Housing' },
-  { type: 'Transportation' },
-  { type: 'Insurance' },
-  { type: 'Household items' },
-  { type: 'Debt' },
-  { type: 'Retirement' },
-  { type: 'Personal and Entertainment' },
-  { type: 'Other' }
-]
-
 const BudgetCalculator: React.FC = () => {
+  const [budget, setBudget] = useState({
+    income: 0,
+    savings: 0,
+    food: 0,
+    utilities: 0,
+    housing: 0,
+    transportation: 0,
+    insurance: 0,
+    household: 0,
+    debt: 0,
+    retirement: 0,
+    personal: 0,
+    other: 0,
+  })
+  
+  const moneyLeft = budget.income - (
+    budget.savings + budget.food + budget.utilities + budget.housing +
+    budget.transportation + budget.insurance + budget.household +
+    budget.debt + budget.retirement + budget.personal + budget.other
+  );
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
+    const value = e.target.value === "" ? "" : Number(e.target.value)
+    setBudget({...budget, [type]: value})
+  }
+
   return (
     <div>
       <div className="text-center tracking-tight">
@@ -37,18 +49,39 @@ const BudgetCalculator: React.FC = () => {
       <div className="grid grid-cols-2">
         <div>
           <ul>
-            {inputs.map((input) => (
-              <li key={input.type}>
-                <label>{input.type}</label>
-                <input type="text" placeholder={input.type} />
+            {Object.keys(budget).map((key) => (
+              <li key={key} className="p-4">
+                <label>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+                <input
+                  type="number"
+                  value={budget[key as keyof typeof budget]}
+                  onChange={(e) => handleInputChange(e, key)}
+                  className="ml-10 border border-solid border-black"
+                  
+                />
               </li>
             ))}
           </ul>
+          <p className="text-2xl p-5 font-bold">
+            Income left: {moneyLeft}$
+          </p>
         </div>
         <div>
-          <CalculatorChart />
+        <CalculatorChart
+            income={budget.income}
+            savings={budget.savings}
+            food={budget.food}
+            utilities={budget.utilities}
+            housing={budget.housing}
+            transportation={budget.transportation}
+            insurance={budget.insurance}
+            household={budget.household}
+            debt={budget.debt}
+            retirement={budget.retirement}
+            personal={budget.personal}
+            other={budget.other}
+          />
         </div>
-
       </div>
     </div>
   )
