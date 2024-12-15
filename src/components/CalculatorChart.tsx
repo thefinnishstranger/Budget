@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import ApexCharts, { ApexOptions } from "apexcharts";
 
 interface BudgetCategories {
-    income: number;
     savings: number;
     food: number;
     utilities: number;
@@ -16,7 +15,7 @@ interface BudgetCategories {
     other: number;
   }
 
-  const DonutChart = ({ income, savings, food, utilities, housing, transportation, insurance, household, debt, retirement, personal, other }: BudgetCategories) => {
+  const DonutChart = ({ savings, food, utilities, housing, transportation, insurance, household, debt, retirement, personal, other }: BudgetCategories) => {
     const chartRef = useRef<ApexCharts | null>(null);
   
     const convertToNumber = (value: any) => {
@@ -109,7 +108,7 @@ interface BudgetCategories {
       
       const chart = new ApexCharts(
         document.getElementById("donut-chart"),
-        getChartOptions({ income, savings, food, utilities, housing, transportation, insurance, household, debt, retirement, personal, other })
+        getChartOptions({ savings, food, utilities, housing, transportation, insurance, household, debt, retirement, personal, other })
       );
       chartRef.current = chart;
       chart.render();
@@ -119,7 +118,7 @@ interface BudgetCategories {
           chartRef.current.destroy();
         }
       };
-    }, [income, savings, food, utilities, housing, transportation, insurance, household, debt, retirement, personal, other]);
+    }, [savings, food, utilities, housing, transportation, insurance, household, debt, retirement, personal, other]);
   
     return (
       <div className="max-w-sm w-full bg-white p-4 md:p-6">
