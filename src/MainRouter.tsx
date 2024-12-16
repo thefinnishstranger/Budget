@@ -6,6 +6,7 @@ import AccountPage from './pages/AccountPage'
 import NavBar from './components/NavBar.tsx'
 import About from './pages/About.tsx'
 import SignUpPage from './pages/SignUpPage.tsx'
+import ForgotPassword from './pages/ForgotPassword.tsx'
 
 
 const MainRouter: React.FC = () => {
@@ -20,6 +21,7 @@ const MainRouter: React.FC = () => {
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/account" element={<AccountPage />} />
               <Route path="/about" element={<About />} />
+              <Route path="/forgotpassword" element={<ForgotPassword />} />
             </Routes>
         </>
     </div>

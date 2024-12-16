@@ -1,20 +1,45 @@
+import FullYearSpending from "../components/FullYearSpending"
+import MonthlySpendingChart from "../components/MonthlySpendingChart"
 
 
 const AccountPage: React.FC = () => {
   return (
     <div>
-      <p>
-        Hello account.name
+      <div>
+      <p className="text-center text-3xl font-bold p-8 tracking-tight">
+        Monthly expenses
       </p>
-      <p>
-        This months expenses, but have a button that can scroll through the months
+      <p className="tracking-tight text-xl text-center">
+        Hello account.name, here are your this month's expenses
       </p>
-      <p>
+      </div>
+      <div>
+      <p className="text-center m-10">
+        Chart
+        <div>
+          <MonthlySpendingChart />
+        </div>
+      </p>
+      
+      </div>
+      <div className="grid grid-cols-2 m-10">
+        <div>
+        <p className="text-center justify-center">
         Your biggest spending categories
-      </p>
-      <p>
+        </p>
+        </div>
+        <div>
+        <p className="text-center justify-center">
         Your biggest purchases
-      </p>
+        </p>
+        </div>
+      </div>
+      <div>
+        <p className="text-center text-3xl font-bold tracking-tight">
+          Spending this year
+        </p>
+        <FullYearSpending />
+      </div>
     </div>
   )
 }

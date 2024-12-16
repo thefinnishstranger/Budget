@@ -96,16 +96,16 @@ const BudgetCalculator: React.FC = () => {
     <div className="tracking-tight">
       <div className="text-center m-10">
         <p className="text-4xl font-bold">Budget Calculator</p>
-        <p className="mt-3 text-xl">Welcome to the budget calculator where you can bla bla bla</p>
+        <p className="mt-3 text-xl">If budgeting is new to you or something you haven’t tackled in a while, this budget calculator is a great place to start. Simply enter your monthly income after taxes, and it will generate a sample budget to guide you.</p>
       </div>
-      <div className="m-8 border-b-2 p-4">
-        <p className="text-3xl font-semibold">Calculate your monthly expenses</p>
-        <p className="mb-3 mt-2 tracking-tight">
+      <div className="border-b-2 pb-4 m-8">
+        <p className="text-3xl font-semibold ml-3">Calculate your monthly expenses</p>
+        <p className="mb-3 mt-2 tracking-tight ml-3">
           Input your post-tax monthly income into the income section and see where your money should be going
         </p>
-        <p className="text-2xl font-bold mb-2">Income</p>
+        <p className="text-2xl font-bold mb-2 ml-3">Income</p>
         <div>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-5 ml-3">
             <label>Monthly Income (after taxes)</label>
             <div className="relative flex items-center">
               <span className="absolute inset-y-0 left-2 flex items-center text-black">$</span>
@@ -114,7 +114,7 @@ const BudgetCalculator: React.FC = () => {
                 value={income}
                 onChange={handleIncomeChange}
                 onBlur={handleIncomeBlur}
-                className="border-2 border-black text-right pr-2 pl-8 w-28 rounded"
+                className="border-2 border-black text-right pr-2 pl-8 w-28 rounded font-semibold"
               />
             </div>
           </div>
@@ -132,7 +132,7 @@ const BudgetCalculator: React.FC = () => {
                       className="w-4 h-4 rounded-full"
                       style={{ backgroundColor: categoryColors[key as keyof typeof categoryColors] }}
                     ></div>
-                    <label className="text-left">{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+                    <label className="text-left tracking-normal">{key.charAt(0).toUpperCase() + key.slice(1)}</label>
                   </div>
                   <div className="relative justify-self-end">
                     <input
@@ -140,7 +140,7 @@ const BudgetCalculator: React.FC = () => {
                       value={budget[key as keyof typeof budget] || ""}
                       onChange={(e) => handleInputChange(e, key)}
                       onBlur={handleBudgetBlur}
-                      className="pl-8 border-2 border-black text-right w-28 pr-2 rounded"
+                      className="pl-8 border-2 border-black text-right w-28 pr-2 rounded font-semibold"
                     />
                     <span className="absolute inset-y-0 left-2 flex items-center pointer-events-none">$</span>
                   </div>
@@ -148,7 +148,6 @@ const BudgetCalculator: React.FC = () => {
               </li>
             ))}
           </ul>
-          <p className="text-2xl mt-6 ml-4 font-semibold">Income left: {moneyLeft}$</p>
         </div>
 
         <div className="flex justify-center items-center">
@@ -167,6 +166,15 @@ const BudgetCalculator: React.FC = () => {
           />
         </div>
       </div>
+      <div className="grid grid-cols-3 m-8 pb-5 pt-5">
+
+          <div>
+            <p className="text-2xl font-bold ml-3">Difference</p>
+          </div>
+          <div>
+            <p className="text-2xl">{moneyLeft}$</p>
+          </div>
+        </div>
     </div>
   );
 };
