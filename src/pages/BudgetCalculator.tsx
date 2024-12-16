@@ -33,13 +33,6 @@ const BudgetCalculator: React.FC = () => {
       chartData.personal +
       chartData.other);
 
-  console.log(moneyLeft);
-  console.log(Number(income));
-  console.log(chartData.other);
-  
-  
-  
-
   const percentages = {
     savings: 0.1,
     food: 0.17,
@@ -51,7 +44,21 @@ const BudgetCalculator: React.FC = () => {
     debt: 0.2,
     retirement: 0,
     personal: 0.07,
-    other: 0
+    other: 0,
+  };
+
+  const categoryColors = {
+    savings: "#1D4ED8", // Deep blue
+    food: "#EF4444", // Solid red
+    utilities: "#10B981", // Solid green
+    housing: "#F59E0B", // Solid yellow
+    transportation: "#8B5CF6", // Purple
+    insurance: "#3B82F6", // Light blue
+    household: "#F87171", // Soft red
+    debt: "#FACC15", // Bright yellow
+    retirement: "#14B8A6", // Teal
+    personal: "#D97706", // Orange
+    other: "#6B7280", // Gray
   };
 
   const handleIncomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +76,6 @@ const BudgetCalculator: React.FC = () => {
 
   const handleIncomeBlur = () => {
     if (Number(income) > 0) {
-      // Update budget based on income
       const newBudget = Object.keys(percentages).reduce((acc, key) => {
         acc[key as keyof typeof budget] = Math.round(
           (income as number) * percentages[key as keyof typeof percentages]
@@ -77,56 +83,75 @@ const BudgetCalculator: React.FC = () => {
         return acc;
       }, {} as typeof budget);
 
-      setBudget(newBudget); // Update budget
-      setChartData(newBudget); // Update chart data to reflect the new budget
+      setBudget(newBudget);
+      setChartData(newBudget);
     }
   };
 
   const handleBudgetBlur = () => {
-    setChartData({ ...budget }); // Update chart data when budget fields are edited
+    setChartData({ ...budget });
   };
 
   return (
-    <div>
-      <div className="text-center tracking-tight">
-        <p className="text-3xl font-bold">Budget Calculator</p>
-        <p>Welcome to the budget calculator where you can bla bla bla</p>
+    <div className="tracking-tight">
+      <div className="text-center m-10">
+        <p className="text-4xl font-bold">Budget Calculator</p>
+        <p className="mt-3 text-xl">Welcome to the budget calculator where you can bla bla bla</p>
       </div>
-      <div>
-        <p className="text-2xl font-semibold">Calculate your monthly expenses</p>
-        <p className="mb-5">
+      <div className="m-8 border-b-2 p-4">
+        <p className="text-3xl font-semibold">Calculate your monthly expenses</p>
+        <p className="mb-3 mt-2 tracking-tight">
           Input your post-tax monthly income into the income section and see where your money should be going
         </p>
+        <p className="text-2xl font-bold mb-2">Income</p>
         <div>
-          <input
-            type="number"
-            placeholder="Enter income"
-            value={income}
-            onChange={handleIncomeChange}
-            onBlur={handleIncomeBlur}
-            className="border border-solid border-black"
-          />
+          <div className="flex items-center gap-5">
+            <label>Monthly Income (after taxes)</label>
+            <div className="relative flex items-center">
+              <span className="absolute inset-y-0 left-2 flex items-center text-black">$</span>
+              <input
+                type="number"
+                value={income}
+                onChange={handleIncomeChange}
+                onBlur={handleIncomeBlur}
+                className="border-2 border-black text-right pr-2 pl-8 w-28 rounded"
+              />
+            </div>
+          </div>
         </div>
       </div>
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 gap-8 m-8">
         <div>
+          <p className="text-2xl font-bold mb-4 ml-3">Expenses</p>
           <ul>
             {Object.keys(budget).map((key) => (
-              <li key={key} className="p-4">
-                <label>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
-                <input
-                  type="number"
-                  value={budget[key as keyof typeof budget] || ""}
-                  onChange={(e) => handleInputChange(e, key)}
-                  onBlur={handleBudgetBlur}
-                  className="ml-10 border border-solid border-black"
-                />
+              <li key={key} className="p-4 border-b-2">
+                <div className="grid grid-cols-2 items-center">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: categoryColors[key as keyof typeof categoryColors] }}
+                    ></div>
+                    <label className="text-left">{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+                  </div>
+                  <div className="relative justify-self-end">
+                    <input
+                      type="number"
+                      value={budget[key as keyof typeof budget] || ""}
+                      onChange={(e) => handleInputChange(e, key)}
+                      onBlur={handleBudgetBlur}
+                      className="pl-8 border-2 border-black text-right w-28 pr-2 rounded"
+                    />
+                    <span className="absolute inset-y-0 left-2 flex items-center pointer-events-none">$</span>
+                  </div>
+                </div>
               </li>
             ))}
           </ul>
-          <p className="text-2xl p-5 font-bold">Income left: {moneyLeft}$</p>
+          <p className="text-2xl mt-6 ml-4 font-semibold">Income left: {moneyLeft}$</p>
         </div>
-        <div>
+
+        <div className="flex justify-center items-center">
           <CalculatorChart
             savings={chartData.savings}
             food={chartData.food}

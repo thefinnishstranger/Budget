@@ -38,16 +38,25 @@ interface BudgetCategories {
           convertToNumber(categories.other),
         ],
         labels: [
-          "savings", "food", "utilities", "housing",
-          "transportation", "insurance", "household",
-          "debt", "retirement", "personal", "other"
+          "Savings", "Food", "Utilities", "Housing",
+          "Transportation", "Insurance", "Household",
+          "Debt", "Retirement", "Personal", "Other"
         ],
         colors: [
-          "#1C64F2", "#16BDCA", "#FDBA8C", "#E74694", "#F59E0B", "#84CC16", "#10B981",
-          "#6366F1", "#F87171", "#D97706", "#4B5563"
-        ],
+  "#1D4ED8", // Deep blue
+  "#EF4444", // Solid red
+  "#10B981", // Solid green
+  "#F59E0B", // Solid yellow
+  "#8B5CF6", // Purple
+  "#3B82F6", // Light blue
+  "#F87171", // Soft red
+  "#FACC15", // Bright yellow
+  "#14B8A6", // Teal
+  "#D97706", // Orange
+  "#6B7280", // Gray
+],
         chart: {
-          height: 340,
+          height: 500,
           width: "100%",
           type: "donut",
         },
@@ -68,7 +77,8 @@ interface BudgetCategories {
                   showAlways: true,
                   show: true,
                   label: "Total spent",
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "Helvetica, Arial, sans-serif",
+                  fontSize: '20px',
                   formatter: function (w: any) {
                     const sum = w.globals.seriesTotals.reduce((a: number, b: number) => a + b, 0);
                     return '$' + sum;
@@ -77,13 +87,15 @@ interface BudgetCategories {
                 value: {
                   show: true,
                   fontFamily: "Inter, sans-serif",
+       
+                  fontSize: '24px',
                   offsetY: -20,
                   formatter: function (value: number) {
                     return value + "k";
                   },
                 },
               },
-              size: "65%",
+              size: "50%",
             },
           },
         },
@@ -93,7 +105,12 @@ interface BudgetCategories {
           },
         },
         dataLabels: {
-          enabled: false,
+          enabled: true,
+          style: {
+            fontSize: '16px',
+            fontFamily: "Helvetica, Arial, sans-serif",
+            fontWeight: 'none'
+          }
         },
         legend: {
           show: false
@@ -121,7 +138,7 @@ interface BudgetCategories {
     }, [savings, food, utilities, housing, transportation, insurance, household, debt, retirement, personal, other]);
   
     return (
-      <div className="max-w-sm w-full bg-white p-4 md:p-6">
+      <div className="w-full bg-white p-4 md:p-6">
         <div className="py-6" id="donut-chart"></div>
       </div>
     );
