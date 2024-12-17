@@ -1,38 +1,36 @@
 import React, { useEffect, useState } from "react";
 import ApexCharts from "apexcharts";
 
-const FullYearSpending: React.FC = () => {
+interface FullYearSpendingProps {
+  selectedYear: number;
+}
 
-  const currentYear = new Date().getFullYear();
-
-  const [selectedYear, setSelectedYear] = useState(currentYear);
-
+const FullYearSpending: React.FC<FullYearSpendingProps> = ({ selectedYear }) => {
   const generateChartData = (year: number) => {
-    // Placeholder data generation logic
-    // Replace this with real data fetching based on the year
+    // Placeholder: Replace with actual year-based data fetching
     return Array.from({ length: 12 }, () => Math.floor(Math.random() * 1000 + year % 10));
   };
 
-
   useEffect(() => {
     const options = {
-      series: [{ name: "Inflation", data: generateChartData(selectedYear) }],
+      series: [{ name: "Spending", data: generateChartData(selectedYear) }],
       chart: { height: 350, type: "bar" },
-      xaxis: { categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] },
-      title: { text: `Your monthly spending in ${currentYear}`, align: "center" },
+      xaxis: {
+        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      },
+      title: {
+        text: `Your Monthly Spending in ${selectedYear}`,
+        align: "center",
+      },
     };
 
     const chart = new ApexCharts(document.querySelector("#yearly-chart"), options);
     chart.render();
 
-    return () => chart.destroy();
-  }, []);
+    return () => chart.destroy(); // Clean up the chart on year change
+  }, [selectedYear]); // Re-run when `selectedYear` changes
 
-  return (
-    <div className="w-full bg-white p-4 md:p-6">
-      <div id="yearly-chart" className="py-6"></div>
-    </div>
-  );
+  return <div id="yearly-chart" className="py-6"></div>;
 };
 
 export default FullYearSpending;

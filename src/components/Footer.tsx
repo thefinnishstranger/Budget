@@ -30,7 +30,7 @@ const socialIcons = [
 
 const Footer = () => {
   return (
-    <footer className="bg-green-500 text-white py-20 text-center tracking-tight">
+    <footer className="bg-green-500 text-white py-20 text-center font-semibold">
       <div className="">
         <div className="flex justify-center">
           <a href="/" className="transition transform hover:text-slate-200 duration-150 mr-6 ml-6">
