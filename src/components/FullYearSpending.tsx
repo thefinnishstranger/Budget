@@ -1,115 +1,36 @@
-import React, { useEffect } from 'react';
-import ApexCharts from 'apexcharts';
+import React, { useEffect, useState } from "react";
+import ApexCharts from "apexcharts";
 
 const FullYearSpending: React.FC = () => {
+
+  const currentYear = new Date().getFullYear();
+
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+
+  const generateChartData = (year: number) => {
+    // Placeholder data generation logic
+    // Replace this with real data fetching based on the year
+    return Array.from({ length: 12 }, () => Math.floor(Math.random() * 1000 + year % 10));
+  };
+
+
   useEffect(() => {
-    // Define chart options
     const options = {
-      series: [
-        {
-          name: 'Inflation',
-          data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2],
-        },
-      ],
-      chart: {
-        height: 350,
-        type: 'bar',
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 10,
-          dataLabels: {
-            position: 'top',
-          },
-        },
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: function (val: number) {
-          return val + '%';
-        },
-        offsetY: -20,
-        style: {
-          fontSize: '12px',
-          colors: ['#304758'],
-        },
-      },
-      xaxis: {
-        categories: [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
-        ],
-        position: 'top',
-        axisBorder: {
-          show: false,
-        },
-        axisTicks: {
-          show: false,
-        },
-        crosshairs: {
-          fill: {
-            type: 'gradient',
-            gradient: {
-              colorFrom: '#D8E3F0',
-              colorTo: '#BED1E6',
-              stops: [0, 100],
-              opacityFrom: 0.4,
-              opacityTo: 0.5,
-            },
-          },
-        },
-        tooltip: {
-          enabled: true,
-        },
-      },
-      yaxis: {
-        axisBorder: {
-          show: false,
-        },
-        axisTicks: {
-          show: false,
-        },
-        labels: {
-          show: false,
-          formatter: function (val: number) {
-            return val + '%';
-          },
-        },
-      },
-      title: {
-        text: 'Monthly Inflation in Argentina, 2002',
-        floating: true,
-        offsetY: 330,
-        align: 'center',
-        style: {
-          color: '#444',
-        },
-      },
+      series: [{ name: "Inflation", data: generateChartData(selectedYear) }],
+      chart: { height: 350, type: "bar" },
+      xaxis: { categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] },
+      title: { text: `Your monthly spending in ${currentYear}`, align: "center" },
     };
 
-    // Initialize the chart
-    const chart = new ApexCharts(document.querySelector('#chart'), options);
+    const chart = new ApexCharts(document.querySelector("#yearly-chart"), options);
     chart.render();
 
-    // Cleanup the chart on component unmount
-    return () => {
-      chart.destroy();
-    };
+    return () => chart.destroy();
   }, []);
 
   return (
     <div className="w-full bg-white p-4 md:p-6">
-      <div id="chart" className="py-6"></div>
+      <div id="yearly-chart" className="py-6"></div>
     </div>
   );
 };

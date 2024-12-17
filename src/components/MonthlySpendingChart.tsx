@@ -1,94 +1,39 @@
-import { useEffect } from "react"
-import ApexCharts from 'apexcharts';
+import { useEffect } from "react";
+import ApexCharts from "apexcharts";
+
 
 const MonthlySpendingChart: React.FC = () => {
-    useEffect(() => {
+  const getDaysInMonth = (year: number, month: number): number[] => {
+    const days = new Date(year, month + 1, 0).getDate();
+    return Array.from({ length: days }, (_, i) => i + 1);
+  }
 
-        var options = {
-            series: [
-            {
-              name: "High - 2013",
-              data: [28, 29, 33, 36, 32, 32, 33]
-            },
-            {
-              name: "Low - 2013",
-              data: [12, 11, 14, 18, 17, 13, 13]
-            }
-          ],
-            chart: {
-            height: 350,
-            type: 'line',
-            dropShadow: {
-              enabled: true,
-              color: '#000',
-              top: 18,
-              left: 7,
-              blur: 10,
-              opacity: 0.5
-            },
-            zoom: {
-              enabled: false
-            },
-            toolbar: {
-              show: false
-            }
-          },
-          colors: ['#77B6EA', '#545454'],
-          dataLabels: {
-            enabled: true,
-          },
-          stroke: {
-            curve: 'smooth'
-          },
-          title: {
-            text: 'Average High & Low Temperature',
-            align: 'left'
-          },
-          grid: {
-            borderColor: '#e7e7e7',
-            row: {
-              colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-              opacity: 0.5
-            },
-          },
-          markers: {
-            size: 1
-          },
-          xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-            title: {
-              text: 'Month'
-            }
-          },
-          yaxis: {
-            title: {
-              text: 'Temperature'
-            },
-            min: 5,
-            max: 40
-          },
-          legend: {
-            position: 'top',
-            horizontalAlign: 'right',
-            floating: true,
-            offsetY: -25,
-            offsetX: -5
-          }
-          };
-  
-          var chart = new ApexCharts(document.querySelector("#chart"), options);
-          chart.render();
+  useEffect(() => {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    const days = getDaysInMonth(currentYear, currentMonth);
+    
+    const options = {
+      series: [
+        { name: "Daily spending", data: days.map(() => Math.floor(Math.random() * 1000)) },
+      ],
+      chart: { height: 350, type: "line", toolbar: { show: false } },
+      stroke: { curve: "smooth" },
+      title: { text: "Daily spending", align: "left" },
+      xaxis: { categories: days },
+    };
 
-          return () => {
-            chart.destroy();
-          };
-    }, [])
+    const chart = new ApexCharts(document.querySelector("#monthly-chart"), options);
+    chart.render();
 
-    return (
-        <div className="w-full bg-white p-4 md:p-6">
-            <div id="chart" className="py-6"></div>
-        </div>
-    )
-}
+    return () => chart.destroy();
+  }, []);
+
+  return (
+    <div className="w-full bg-white p-4 md:p-6">
+      <div id="monthly-chart" className="py-6"></div>
+    </div>
+  );
+};
 
 export default MonthlySpendingChart;
