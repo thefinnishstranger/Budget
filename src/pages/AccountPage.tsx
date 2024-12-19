@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import FullYearSpending from "../components/FullYearSpending";
 import MonthlySpendingChart from "../components/MonthlySpendingChart";
+import ExpenseInput from "../components/ExpenseInput";
 
 const AccountPage: React.FC = () => {
   const monthNames = [
@@ -13,6 +14,7 @@ const AccountPage: React.FC = () => {
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedMonth, setSelectedMonth] = useState(currentMonthNumber);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (selectedYear === currentYear) {
@@ -35,6 +37,18 @@ const AccountPage: React.FC = () => {
             {monthNames[selectedMonth]} {selectedYear}
           </span>.
         </p>
+        <div>
+          <button
+            type="button"
+            className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Add expense
+            </button>
+          {isModalOpen && (
+            <ExpenseInput onClose={() => setIsModalOpen(false)} />
+          )}
+        </div>
       </div>
 
       {/* Month Selector */}
