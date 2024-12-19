@@ -60,21 +60,21 @@ export default function About() {
               </p>
               <ul role="list" className="mt-8 space-y-8 text-gray-600">
                 <li className="flex gap-x-3">
-                  <CloudArrowUpIcon aria-hidden="true" className="mt-1 h-5 w-5 flex-none text-indigo-600" />
+                  <CloudArrowUpIcon aria-hidden="true" className="mt-1 h-5 w-5 flex-none text-green-500" />
                   <span>
                     <strong className="font-semibold text-gray-900">Visual Insights:</strong> Stay informed with
                     intuitive charts that break down your monthly expenses into categories for quick analysis.
                   </span>
                 </li>
                 <li className="flex gap-x-3">
-                  <LockClosedIcon aria-hidden="true" className="mt-1 h-5 w-5 flex-none text-indigo-600" />
+                  <LockClosedIcon aria-hidden="true" className="mt-1 h-5 w-5 flex-none text-green-500" />
                   <span>
                     <strong className="font-semibold text-gray-900">Secure Expense Tracking:</strong> Easily record and
                     track your spending while ensuring your data remains private and protected.
                   </span>
                 </li>
                 <li className="flex gap-x-3">
-                  <ServerIcon aria-hidden="true" className="mt-1 h-5 w-5 flex-none text-indigo-600" />
+                  <ServerIcon aria-hidden="true" className="mt-1 h-5 w-5 flex-none text-green-500" />
                   <span>
                     <strong className="font-semibold text-gray-900">Customizable Budgets:</strong> Set personalized
                     budget goals and track your progress in real-time to stay on top of your financial plans.
