@@ -27,7 +27,7 @@ const MonthlySpendingChart: React.FC<MonthlySpendingChartProps> = ({ currentYear
           data: days.map(() => Math.floor(Math.random() * 1000)), // Replace with real data fetching logic
         },
       ],
-      chart: { height: 350, type: "line", toolbar: { show: false } },
+      chart: { height: 500, type: "line", toolbar: { show: false } },
       stroke: { curve: "smooth" },
       title: { text: `Daily Spending for ${currentYear} - ${monthNames[currentMonth]}`, align: "left" },
       xaxis: { categories: days, title: { text: "Days of the Month" } },

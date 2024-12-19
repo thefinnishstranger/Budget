@@ -14,7 +14,7 @@ const FullYearSpending: React.FC<FullYearSpendingProps> = ({ selectedYear }) => 
   useEffect(() => {
     const options = {
       series: [{ name: "Spending", data: generateChartData(selectedYear) }],
-      chart: { height: 350, type: "bar" },
+      chart: { height: 500, type: "bar" },
       xaxis: {
         categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
       },

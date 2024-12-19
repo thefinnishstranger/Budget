@@ -28,7 +28,7 @@ const AccountPage: React.FC = () => {
     <div className="bg-white min-h-screen">
 
       {/* Introduction Section */}
-      <div className="p-10 text-center grid grid-cols-2">
+      <div className="p-10 text-center grid grid-cols-2 shadow-md">
 
         <div className="p-8">
         <h1 className="text-4xl font-extrabold text-gray-800 tracking-tight">
@@ -95,7 +95,7 @@ const AccountPage: React.FC = () => {
       </div>
 
       {/* Monthly Chart */}
-      <div className="w-full max-w-6xl mx-auto">
+      <div className="w-full max-w-7xl mx-auto">
         <MonthlySpendingChart currentYear={selectedYear} currentMonth={selectedMonth} />
       </div>
 
@@ -144,7 +144,7 @@ const AccountPage: React.FC = () => {
             ))}
           </select>
         </div>
-        <div className="mt-6 mb-20">
+        <div className="mt-6 mb-20 w-full max-w-7xl mx-auto">
           <FullYearSpending selectedYear={selectedYear} />
         </div>
       </div>
