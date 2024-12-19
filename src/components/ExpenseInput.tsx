@@ -2,17 +2,17 @@ import React, { useState } from "react";
 
 const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const categories = [
-    "savings",
-    "food",
-    "utilities",
-    "housing",
-    "transportation",
-    "insurance",
-    "household",
-    "debt",
-    "retirement",
-    "personal",
-    "other",
+    "Savings",
+    "Food",
+    "Utilities",
+    "Housing",
+    "Transportation",
+    "Insurance",
+    "Household",
+    "Debt",
+    "Retirement",
+    "Personal",
+    "Other",
   ];
 
   const [selectedCategory, setSelectedCategory] = useState(""); // State for selected category
