@@ -1,0 +1,8 @@
+POST http://localhost:5001/api/expenses
+Content-Type: application/json
+
+{
+  "cost": 12.99,
+  "category": "interesting",
+  "date": "12/8/2024"
+}
