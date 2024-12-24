@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createExpense } from "../services/expenseService.js"
 
 const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const categories = [
@@ -15,7 +16,10 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     "Other",
   ];
 
-  const [selectedCategory, setSelectedCategory] = useState(""); // State for selected category
+  const [selectedCategory, setSelectedCategory] = useState(categories[10]); // State for selected category
+  const [cost, setCost] = useState("");
+  const [date, setDate] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -24,8 +28,14 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            console.log("Expense Submitted:", { selectedCategory });
-            onClose(); // Close modal on submission
+            const category = selectedCategory;
+            console.log("Expense Submitted:", { selectedCategory, cost, date });
+            setIsSubmitting(true)
+            const newExpense = {category, cost, date};
+            createExpense(newExpense)
+              .then(() => onClose())
+              .catch((error) => console.error("Error creating expense", error))
+              setIsSubmitting(false)
           }}
         >
           <div className="mb-4">
@@ -40,6 +50,8 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               type="number"
               className="border border-gray-300 rounded w-full p-2"
               placeholder="Enter amount"
+              value={cost}
+              onChange={(e) => setCost(e.target.value)}
               required
             />
           </div>
@@ -55,6 +67,8 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               type="date"
               className="border border-gray-300 rounded w-full p-2"
               required
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
             />
           </div>
           <div className="mb-4">
@@ -93,7 +107,7 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded"
             >
-              Save Expense
+              {isSubmitting ? "Saving..." : "Save Expense"}
             </button>
           </div>
         </form>
