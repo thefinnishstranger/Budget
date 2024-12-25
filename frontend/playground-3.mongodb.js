@@ -1,43 +1,24 @@
-/* global use, db */
-// MongoDB Playground
-// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
-// Make sure you are connected to enable completions and to be able to run a playground.
-// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
-// The result of the last command run in a playground is shown on the results panel.
-// By default the first 20 documents will be returned with a cursor.
-// Use 'console.log()' to print to the debug output.
-// For more documentation on playgrounds please refer to
-// https://www.mongodb.com/docs/mongodb-vscode/playgrounds/
-
 // Select the database to use.
 use('Budget');
 
-// Insert a few documents into the sales collection.
-db.getCollection('expenses').insertMany([
-  { 'item': 'abc', 'price': 10, 'quantity': 2, 'date': new Date('2014-03-01T08:00:00Z') },
-  { 'item': 'jkl', 'price': 20, 'quantity': 1, 'date': new Date('2014-03-01T09:00:00Z') },
-  { 'item': 'xyz', 'price': 5, 'quantity': 10, 'date': new Date('2014-03-15T09:00:00Z') },
-  { 'item': 'xyz', 'price': 5, 'quantity': 20, 'date': new Date('2014-04-04T11:21:39.736Z') },
-  { 'item': 'abc', 'price': 10, 'quantity': 10, 'date': new Date('2014-04-04T21:23:13.331Z') },
-  { 'item': 'def', 'price': 7.5, 'quantity': 5, 'date': new Date('2015-06-04T05:08:13Z') },
-  { 'item': 'def', 'price': 7.5, 'quantity': 10, 'date': new Date('2015-09-10T08:43:00Z') },
-  { 'item': 'abc', 'price': 10, 'quantity': 5, 'date': new Date('2016-02-06T20:20:13Z') },
-]);
-
-// Run a find command to view items sold on April 4th, 2014.
-const salesOnApril4th = db.getCollection('expenses').find({
-  date: { $gte: new Date('2014-04-04'), $lt: new Date('2014-04-05') }
-}).count();
-
-// Print a message to the output window.
-console.log(`${salesOnApril4th} sales occurred in 2014.`);
-
-// Here we run an aggregation and open a cursor to the results.
-// Use '.toArray()' to exhaust the cursor to return the whole result set.
-// You can use '.hasNext()/.next()' to iterate through the cursor page by page.
-db.getCollection('expenses').aggregate([
-  // Find all of the sales that occurred in 2014.
-  { $match: { date: { $gte: new Date('2014-01-01'), $lt: new Date('2015-01-01') } } },
-  // Group the total sales for each product.
-  { $group: { _id: '$item', totalSaleAmount: { $sum: { $multiply: [ '$price', '$quantity' ] } } } }
+// Insert a few documents into the Account collection.
+db.getCollection('Account').insertMany([
+  {
+    firstName: 'Alice',
+    lastName: 'Smith',
+    email: 'alice@example.com',
+    passwordHash: '$2b$10$wH4k6uMBTShOU3Rc/dkEpuT01POg69MD9X1JadAWhBiRMJdALH7Zm', // Hash of 'password123'
+  },
+  {
+    firstName: 'Bob',
+    lastName: 'Brown',
+    email: 'bob@example.com',
+    passwordHash: '$2b$10$3K/Xz/Hi3oLPYvPeKKmdje5vG7umJnNOm57Ml61rgGIKcFvjR/SG2', // Hash of 'password456'
+  },
+  {
+    firstName: 'Charlie',
+    lastName: 'Johnson',
+    email: 'charlie@example.com',
+    passwordHash: '$2b$10$EkQ2m02OmMlrG6tKlRsEKeot05BxR5CGdRc9eP/9kHLyzCb6Kk.aK', // Hash of 'mypassword'
+  },
 ]);

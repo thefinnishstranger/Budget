@@ -1,43 +1,107 @@
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import logo from '/logo.png'
-import icon from '/unknownIcon.png'
-import { useLocation } from 'react-router'
+import {
+  Disclosure,
+  DisclosureButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import logo from "/logo.png";
+import icon from "/unknownIcon.png";
+import { useLocation, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { setToken } from "../services/accountService.js";
 
 const navigation = [
-  { name: 'Home', href: '/', current: true },
-  { name: 'Budget Calculator', href: '/calculator', current: false },
-  { name: 'Dashboard', href: '/account', current: false },
-  { name: 'About us', href: '/about', current: false },
-]
+  { name: "Home", href: "/", current: true },
+  { name: "Budget Calculator", href: "/calculator", current: false },
+  { name: "Dashboard", href: "/account", current: false },
+  { name: "About us", href: "/about", current: false },
+];
 
 function classNames(...classes: (string | boolean | undefined | null)[]) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
-  const location = useLocation()
+export default function NavBar() {
+  const [user, setUser] = useState(null); // User state
+  const navigate = useNavigate();
+  const location = useLocation();
+  const loggedUserJSON = window.localStorage.getItem("loggedUser");
+  const [open, setOpen] = useState(false);
+
+  // Function to refetch user state
+  const refetch = () => {
+    const loggedUserJSON = window.localStorage.getItem("loggedUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      setToken(user.token);
+      console.log("User state updated:", user);
+    } else {
+      setUser(null);
+      console.log("No user found in localStorage");
+    }
+  };
+
+  useEffect(() => {
+    // Initial check for logged-in user
+    refetch();
+
+    // Listen for localStorage changes
+    const handleStorageChange = () => {
+      console.log("Storage event detected, refetching user data...");
+      refetch();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    // Cleanup event listener on unmount
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    window.localStorage.removeItem("loggedUser"); // Clear localStorage
+    setUser(null); // Clear user state
+    setToken(null); // Clear token
+    navigate("/"); // Redirect to home
+    setOpen(false);
+    console.log("User logged out");
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    navigate("/login");
+    setOpen(true);
+  }
+
   return (
     <Disclosure as="nav" className="bg-green-500">
       <div className="mx-auto max-w-15xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            {/* Mobile menu button*/}
+            {/* Mobile menu button */}
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
               <span className="absolute -inset-0.5" />
               <span className="sr-only">Open main menu</span>
-              <Bars3Icon aria-hidden="true" className="block h-6 w-6 group-data-[open]:hidden" />
-              <XMarkIcon aria-hidden="true" className="hidden h-6 w-6 group-data-[open]:block" />
+              <Bars3Icon
+                aria-hidden="true"
+                className="block h-6 w-6 group-data-[open]:hidden"
+              />
+              <XMarkIcon
+                aria-hidden="true"
+                className="hidden h-6 w-6 group-data-[open]:block"
+              />
             </DisclosureButton>
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
-              <a href='/'>
-                <img
-                  alt="Budget"
-                  src={logo}
-                  className="h-8 w-auto rounded"
-                />
+              <a href="/">
+                <img alt="Budget" src={logo} className="h-8 w-auto rounded" />
               </a>
             </div>
             <div className="hidden sm:ml-6 sm:block">
@@ -46,10 +110,12 @@ export default function Example() {
                   <a
                     key={item.name}
                     href={item.href}
-                    aria-current={item.current ? 'page' : undefined}
+                    aria-current={item.current ? "page" : undefined}
                     className={classNames(
-                      location.pathname === item.href ? 'bg-gray-100 text-black' : 'text-white transition transform hover:bg-green-800 hover:text-white hover:scale-105 duration-300',
-                      'rounded-md px-3 py-2 text-sm font-medium',
+                      location.pathname === item.href
+                        ? "bg-gray-100 text-black"
+                        : "text-white transition transform hover:bg-green-800 hover:text-white hover:scale-105 duration-300",
+                      "rounded-md px-3 py-2 text-sm font-medium"
                     )}
                   >
                     {item.name}
@@ -74,31 +140,26 @@ export default function Example() {
                 <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
-                  <img
-                    alt="logo"
-                    src={icon}
-                    className="h-8 w-8 rounded-full"
-                  />
+                  <img alt="logo" src={icon} className="h-8 w-8 rounded-full" />
                 </MenuButton>
               </div>
-              <MenuItems
-                transition
-                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-              >
+              <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none">
                 <MenuItem>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
-                    Your Profile
-                  </a>
-                </MenuItem>
-                <MenuItem>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
-                    Settings
-                  </a>
-                </MenuItem>
-                <MenuItem>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
-                    Sign out
-                  </a>
+                  {loggedUserJSON ? (
+                    <button
+                      className="block px-4 py-2 text-sm text-gray-700"
+                      onClick={handleLogout}
+                    >
+                      Sign out
+                    </button>
+                  ) : (
+                    <button
+                      className="block px-4 py-2 text-sm text-gray-700"
+                      onClick={handleLogin}
+                    >
+                      Sign in
+                    </button>
+                  )}
                 </MenuItem>
               </MenuItems>
             </Menu>
@@ -106,24 +167,26 @@ export default function Example() {
         </div>
       </div>
 
-      <DisclosurePanel className="sm:hidden">
+      <Disclosure.Panel className="sm:hidden">
         <div className="space-y-1 px-2 pb-3 pt-2">
           {navigation.map((item) => (
             <DisclosureButton
               key={item.name}
               as="a"
               href={item.href}
-              aria-current={item.current ? 'page' : undefined}
+              aria-current={item.current ? "page" : undefined}
               className={classNames(
-                location.pathname === item.href ? 'bg-green-800 text-white' : 'text-white hover:bg-gray-700 hover:text-white',
-                'block rounded-md px-3 py-2 text-base font-medium',
+                location.pathname === item.href
+                  ? "bg-green-800 text-white"
+                  : "text-white hover:bg-gray-700 hover:text-white",
+                "block rounded-md px-3 py-2 text-base font-medium"
               )}
             >
               {item.name}
             </DisclosureButton>
           ))}
         </div>
-      </DisclosurePanel>
+      </Disclosure.Panel>
     </Disclosure>
-  )
+  );
 }

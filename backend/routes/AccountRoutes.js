@@ -1,63 +1,68 @@
 import express from "express";
-import Account from "../schemas/AccountSchema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Account from "../schemas/AccountSchema.js";
 
 const accountRouter = express.Router();
 
-accountRouter.get("/", async (request, response) => {
-    const accounts = await Account.find({});
-    response.json(accounts.map((account) => account.toJSON()));
+// Login route
+accountRouter.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await Account.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    const passwordCorrect = await bcrypt.compare(password, user.passwordHash);
+    if (!passwordCorrect) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    const userForToken = {
+      email: user.email,
+      id: user._id,
+    };
+
+    const token = jwt.sign(userForToken, process.env.SECRET || "default_secret", {
+      expiresIn: "1h",
+    });
+
+    res.status(200).send({
+      token,
+      email: user.email,
+      name: user.firstName,
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
 });
 
-accountRouter.post("/login", async (request, response) => {
-    const { username, password } = request.body;
-    const user = Account.findOne({ username });
-    console.log("found user: ", user);
-    const passwordCorrect = user === null ? false : await bcrypt.compare(password, user.passwordHash);
-    console.log("password correct", passwordCorrect);
-    
-    if (!(user && passwordCorrect)) {
-        return response.status(401).json({
-            error: "invalid username or password"
-        });
-    }
-    const userForToken = {
-        username: user.username,
-        id: user._id
+// Register route
+accountRouter.post("/register", async (req, res) => {
+  const { firstName, lastName, email, password } = req.body;
+
+  try {
+    const existingUser = await Account.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already exists" });
     }
 
-    const token = jwt.sign(userForToken, process.env.SECRET, {
-        expiresIn: 60 * 60
-    })
+    const newAccount = new Account({
+      firstName,
+      lastName,
+      email,
+      passwordHash: await bcrypt.hash(password, 10),
+    });
 
-    response
-        .status(200)
-        .send({ token, username: user.username, name: user.firstName })
-})
-
-accountRouter.post("/", async (request, response) => {
-    const { firstName, lastName, username, password } = request.body;
-
-    try {
-        const existing = await Account.findOne({ username });
-        if (existing) {
-            return response.status(400).json({ error: "username already exists" });
-        }
-
-        const newAccount = new Account({
-            firstName,
-            lastName,
-            username,
-            passwordHash: password
-        })
-
-        const savedAcount = await newAccount.save();
-        response.status(201).json({ message: "account created successfully", account: savedAcount });
-    } catch (error) {
-        console.error("error creating account", error);
-        response.status(500).json({ error: "something went wrong" });
-    }
-})
+    const savedAccount = await newAccount.save();
+    res.status(201).json({ message: "Account created successfully", account: savedAccount });
+  } catch (error) {
+    console.error("Error creating account:", error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
 
 export default accountRouter;
