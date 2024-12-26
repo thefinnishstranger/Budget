@@ -12,3 +12,8 @@ export const createExpense = async (newExpense) => {
     const response = await axios.post(expenseUrl, newExpense); // Fixed variable name
     return response.data;
 };
+
+export const fecthParticularExpense = async (id) => {
+    const response = await axios.get(`${expenseUrl}/${id}`);
+    return request.then((response) => response.data);
+}

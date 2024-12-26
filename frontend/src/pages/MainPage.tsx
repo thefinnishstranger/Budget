@@ -30,6 +30,7 @@ const features = [
 
 export default function MainPage() {
   const navigate = useNavigate()
+  const loggedUserJSON = window.localStorage.getItem("loggedUser");
 
   const aboutUsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -38,8 +39,14 @@ export default function MainPage() {
 
   const startClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    navigate('/signup')
+    if (loggedUserJSON) {
+      navigate('/account')
+    } else {
+      navigate('/signup')
+    }
+    
   }
+
 
   return (
     <>

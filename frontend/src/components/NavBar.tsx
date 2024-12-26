@@ -1,6 +1,7 @@
 import {
   Disclosure,
   DisclosureButton,
+  DisclosurePanel,
   Menu,
   MenuButton,
   MenuItem,
@@ -29,7 +30,6 @@ export default function NavBar() {
   const navigate = useNavigate();
   const location = useLocation();
   const loggedUserJSON = window.localStorage.getItem("loggedUser");
-  const [open, setOpen] = useState(false);
 
   // Function to refetch user state
   const refetch = () => {
@@ -69,15 +69,21 @@ export default function NavBar() {
     setUser(null); // Clear user state
     setToken(null); // Clear token
     navigate("/"); // Redirect to home
-    setOpen(false);
     console.log("User logged out");
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
     navigate("/login");
-    setOpen(true);
-  }
+  };
+
+  // Filter navigation based on login status
+  const filteredNavigation = navigation.filter((item) => {
+    if (item.name === "Dashboard" && !loggedUserJSON) {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <Disclosure as="nav" className="bg-green-500">
@@ -106,7 +112,7 @@ export default function NavBar() {
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                {navigation.map((item) => (
+                {filteredNavigation.map((item) => (
                   <a
                     key={item.name}
                     href={item.href}
@@ -145,7 +151,7 @@ export default function NavBar() {
               </div>
               <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none">
                 <MenuItem>
-                  {loggedUserJSON ? (
+                  {user ? (
                     <button
                       className="block px-4 py-2 text-sm text-gray-700"
                       onClick={handleLogout}
@@ -167,9 +173,9 @@ export default function NavBar() {
         </div>
       </div>
 
-      <Disclosure.Panel className="sm:hidden">
+      <DisclosurePanel className="sm:hidden">
         <div className="space-y-1 px-2 pb-3 pt-2">
-          {navigation.map((item) => (
+          {filteredNavigation.map((item) => (
             <DisclosureButton
               key={item.name}
               as="a"
@@ -186,7 +192,7 @@ export default function NavBar() {
             </DisclosureButton>
           ))}
         </div>
-      </Disclosure.Panel>
+      </DisclosurePanel>
     </Disclosure>
   );
 }
