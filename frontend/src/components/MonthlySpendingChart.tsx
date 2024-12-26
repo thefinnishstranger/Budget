@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ApexCharts from "apexcharts";
+import expenseService from "../services/expenseService.js";
 
 interface MonthlySpendingChartProps {
   currentYear: number;
@@ -12,10 +13,32 @@ const MonthlySpendingChart: React.FC<MonthlySpendingChartProps> = ({ currentYear
     return Array.from({ length: days }, (_, i) => i + 1);
   };
 
+  const [dailySpending, setDailySpending] = useState<number[]>([]);
+
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
+
+  const thisMonthSpending = async () => {
+    try {
+      const response = await expenseService.getMonthlySpending(currentYear, currentMonth);
+      const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+  
+      const spending = Array(daysInMonth.length).fill(0);
+      response.forEach((expense: { day: number; total: number }) => {
+        spending[expense.day - 1] = expense.total;
+      });
+      setDailySpending(spending);
+    } catch (error) {
+      console.error("Error fetching this month's spending:", error);
+      setDailySpending([]); // Fallback to empty data
+    }
+  };
+
+  useEffect(() => {
+    thisMonthSpending();
+  }, [currentYear, currentMonth]);
 
   useEffect(() => {
     const days = getDaysInMonth(currentYear, currentMonth);
@@ -24,7 +47,7 @@ const MonthlySpendingChart: React.FC<MonthlySpendingChartProps> = ({ currentYear
       series: [
         {
           name: "Daily Spending",
-          data: days.map(() => Math.floor(Math.random() * 1000)), // Replace with real data fetching logic
+          data: dailySpending
         },
       ],
       chart: { height: 500, type: "line", toolbar: { show: false } },

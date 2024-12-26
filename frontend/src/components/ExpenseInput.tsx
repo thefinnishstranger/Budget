@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createExpense } from "../services/expenseService.js"
+import expenseService from "../services/expenseService.js"
 
 const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const categories = [
@@ -32,7 +32,7 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             console.log("Expense Submitted:", { selectedCategory, cost, date });
             setIsSubmitting(true)
             const newExpense = {category, cost, date};
-            createExpense(newExpense)
+            expenseService.createExpense(newExpense)
               .then(() => onClose())
               .catch((error) => console.error("Error creating expense", error))
               setIsSubmitting(false)

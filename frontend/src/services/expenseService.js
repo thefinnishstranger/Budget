@@ -1,19 +1,57 @@
-import axios from "axios";
-const expenseUrl = "http://localhost:5001/api/expenses";
-
-// Fetch all expenses
-export const fetchExpenses = async () => {
-    const request = await axios.get(expenseUrl);
-    return request.then((response) => response.data);
-};
-
-// Create a new expense
-export const createExpense = async (newExpense) => {
-    const response = await axios.post(expenseUrl, newExpense); // Fixed variable name
-    return response.data;
-};
-
-export const fecthParticularExpense = async (id) => {
-    const response = await axios.get(`${expenseUrl}/${id}`);
-    return request.then((response) => response.data);
-}
+const getMonthlySpending = async (year, month) => {
+    try {
+      const response = await fetch(`/api/expenses/monthly?year=${year}&month=${month}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      if (!Array.isArray(data)) {
+        throw new Error("Invalid data format received from server");
+      }
+  
+      return data;
+    } catch (error) {
+      console.error("Error fetching monthly spending:", error);
+      throw error;
+    }
+  };
+  
+  
+  const getAllExpenses = async () => {
+    try {
+      const response = await fetch("/api/expenses");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+      throw error;
+    }
+  };
+  
+  const addExpense = async (expense) => {
+    try {
+      const response = await fetch("/api/expenses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(expense),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error adding expense:", error);
+      throw error;
+    }
+  };
+  
+  // Export all functions as a single object
+  export default {
+    getMonthlySpending,
+    getAllExpenses,
+    addExpense,
+  };
+  
