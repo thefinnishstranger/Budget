@@ -1,5 +1,6 @@
 import express from "express";
-import Expense from "../schemas/ExpenseSchema.js"
+import Expense from "../schemas/ExpenseSchema.js";
+import mongoose from "mongoose";
 
 const expenseRouter = express.Router();
 
@@ -9,18 +10,29 @@ expenseRouter.get("/", async (request, response) => {
 })
 
 expenseRouter.post("/", async (request, response) => {
-    const body = request.body;
+    const { cost, category, date, userId } = request.body;
+    
+    if (!userId) {
+        return res.status(400).json({ error: "User ID is required." });
+      }
     const expense = new Expense({
-        cost: body.cost,
-        category: body.category,
-        date: body.date
+        cost,
+        category,
+        date,
+        userId
     })
 
-    const savedExpense = await expense.save();
-    response.status(201).json(savedExpense);
+    try {
+        const savedExpense = await expense.save();
+        res.status(201).json(savedExpense);
+      } catch (error) {
+        console.error("Error saving expense:", error);
+        res.status(500).json({ error: "Failed to save expense" });
+      }
 })
 
-expenseRouter.get("/monthly", async (req, res) => {
+expenseRouter.get("/:userId/monthly", async (req, res) => {
+    const { userId } = req.params;
     const { year, month } = req.query;
   
     if (!year || !month) {
@@ -30,37 +42,105 @@ expenseRouter.get("/monthly", async (req, res) => {
     const startDate = new Date(year, month - 1, 1); // Start of the month
     const endDate = new Date(year, month, 0); // End of the month
   
+    console.log("Received Params:", { userId, year, month });
+    console.log("Date Range:", { startDate, endDate });
+  
     try {
       const expenses = await Expense.aggregate([
         {
           $match: {
+            userId: new mongoose.Types.ObjectId(userId), // Fixed ObjectId instantiation
             date: { $gte: startDate, $lte: endDate },
           },
         },
         {
           $group: {
-            _id: { $dayOfMonth: "$date" },
-            total: { $sum: "$cost" },
+            _id: { $dayOfMonth: "$date" }, // Group by day of the month
+            total: { $sum: "$cost" },     // Sum the costs for each day
           },
         },
         {
           $project: {
-            day: "$_id",
-            total: 1,
-            _id: 0,
+            day: "$_id",                  // Rename _id to day
+            total: 1,                     // Include total in the output
+            _id: 0,                       // Exclude the default _id field
           },
         },
         {
-          $sort: { day: 1 },
+          $sort: { day: 1 },              // Sort by day of the month
         },
       ]);
   
-      console.log("Expenses fetched:", expenses); // Debugging
+      console.log("Aggregated Expenses:", expenses);
       res.json(expenses);
     } catch (error) {
       console.error("Error fetching monthly spending:", error);
-      res.status(500).json({ error: "Failed to fetch monthly spending" });
+      res.status(500).json({ error: "Failed to fetch monthly spending." });
     }
   });
+  
+  
+  expenseRouter.get("/:userId/yearly", async (req, res) => {
+    const { userId } = req.params;
+    const { year } = req.query;
+  
+    if (!year) {
+      return res.status(400).json({ error: "Year is required." });
+    }
+  
+    const startDate = new Date(year, 0, 1); // January 1st
+    const endDate = new Date(year, 11, 31, 23, 59, 59, 999); // December 31st, 23:59:59
+  
+    console.log("Yearly Params:", { userId, year });
+    console.log("Date Range:", { startDate, endDate });
+  
+    try {
+      const expenses = await Expense.aggregate([
+        {
+          $match: {
+            userId: new mongoose.Types.ObjectId(userId),
+            date: { $gte: startDate, $lte: endDate },
+          },
+        },
+        {
+          $group: {
+            _id: { $month: "$date" }, // Group by month
+            total: { $sum: "$cost" }, // Sum the costs for each month
+          },
+        },
+        {
+          $project: {
+            month: "$_id", // Rename _id to month
+            total: 1,      // Include total in the output
+            _id: 0,        // Exclude the default _id field
+          },
+        },
+        {
+          $sort: { month: 1 }, // Sort by month
+        },
+      ]);
+  
+      console.log("Yearly Aggregated Expenses:", expenses);
+      res.json(expenses); // Send response
+    } catch (error) {
+      console.error("Error fetching yearly spending:", error);
+      res.status(500).json({ error: "Failed to fetch yearly spending." });
+    }
+  });
+  
+
+
+  expenseRouter.get("/:userId", async (req, res) => {
+    const { userId } = req.params;
+  
+    try {
+      const expenses = await Expense.find({ userId }).exec();
+      res.json(expenses);
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+      res.status(500).json({ error: "Failed to fetch expenses" });
+    }
+  });
+  
   
 export default expenseRouter;

@@ -33,6 +33,7 @@ accountRouter.post("/login", async (req, res) => {
       token,
       email: user.email,
       name: user.firstName,
+      userId: user._id
     });
   } catch (error) {
     console.error("Login error:", error);
@@ -64,5 +65,15 @@ accountRouter.post("/register", async (req, res) => {
     res.status(500).json({ error: "Something went wrong" });
   }
 });
+
+accountRouter.get("/accounts", async (request, response) => {
+    try {
+        const accounts = await Account.find({}, { passwordHash: 0 });
+        response.status(200).json(accounts);
+    } catch (error) {
+        console.error("error fetching accounts", error);
+        res.status(500).json({ error: "something went wrong" })
+    }
+})
 
 export default accountRouter;

@@ -40,6 +40,7 @@ const generateExpenses = (count) => {
       cost: randomCost,
       category: randomCategory,
       date: randomDate,
+      userId: "676c4934394dae9f473a03a9"
     });
   }
   return expenses;

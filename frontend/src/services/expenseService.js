@@ -1,57 +1,56 @@
-const getMonthlySpending = async (year, month) => {
+import axios from "axios";
+
+const expenseUrl = "http://localhost:5001/api/expenses";
+
+const getMonthlySpending = async (userId, year, month) => {
     try {
-      const response = await fetch(`/api/expenses/monthly?year=${year}&month=${month}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      if (!Array.isArray(data)) {
-        throw new Error("Invalid data format received from server");
-      }
-  
-      return data;
+      const response = await axios.get(`${expenseUrl}/${userId}/monthly`, {
+        params: { year, month },
+      });
+      return response.data; // Return the expenses
     } catch (error) {
       console.error("Error fetching monthly spending:", error);
       throw error;
     }
   };
-  
-  
-  const getAllExpenses = async () => {
+
+const getYearlySpending = async (userId, year) => {
     try {
-      const response = await fetch("/api/expenses");
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return await response.json();
+        const response = await axios.get(`${expenseUrl}/${userId}/yearly`, {
+            params: {year}
+        });
+        return response.data;
     } catch (error) {
-      console.error("Error fetching expenses:", error);
-      throw error;
+        console.error("Error fetching yearly spending:", error);
+        throw error;
+        
     }
-  };
-  
-  const addExpense = async (expense) => {
-    try {
-      const response = await fetch("/api/expenses", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(expense),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error("Error adding expense:", error);
-      throw error;
-    }
-  };
-  
-  // Export all functions as a single object
-  export default {
-    getMonthlySpending,
-    getAllExpenses,
-    addExpense,
-  };
-  
+}
+
+const getAllExpenses = async () => {
+  try {
+    const response = await axios.get(expenseUrl);
+    return response.data; // Axios directly provides the response data
+  } catch (error) {
+    console.error("Error fetching expenses:", error);
+    throw error;
+  }
+};
+
+const addExpense = async (expense) => {
+  try {
+    const response = await axios.post(expenseUrl, expense); // Axios handles JSON stringifying internally
+    return response.data; // Return the added expense data
+  } catch (error) {
+    console.error("Error adding expense:", error);
+    throw error;
+  }
+};
+
+// Export all functions as a single object
+export default {
+  getMonthlySpending,
+  getAllExpenses,
+  addExpense,
+  getYearlySpending
+};
