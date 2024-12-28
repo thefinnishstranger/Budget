@@ -47,10 +47,23 @@ const addExpense = async (expense) => {
   }
 };
 
+const getMonthlyDetails = async (userId, year, month) => {
+    try {
+      const response = await axios.get(`${expenseUrl}/${userId}/monthly-details`, {
+        params: { year, month },
+      });
+      return response.data; // Return the detailed expenses
+    } catch (error) {
+      console.error("Error fetching monthly details:", error);
+      throw error;
+    }
+  };
+
 // Export all functions as a single object
 export default {
   getMonthlySpending,
   getAllExpenses,
   addExpense,
-  getYearlySpending
+  getYearlySpending,
+  getMonthlyDetails
 };

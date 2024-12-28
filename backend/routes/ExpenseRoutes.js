@@ -141,6 +141,35 @@ expenseRouter.get("/:userId/monthly", async (req, res) => {
       res.status(500).json({ error: "Failed to fetch expenses" });
     }
   });
+
+  expenseRouter.get("/:userId/monthly-details", async (req, res) => {
+    const { userId } = req.params;
+    const { year, month } = req.query;
+  
+    if (!year || !month) {
+      return res.status(400).json({ error: "Year and month are required." });
+    }
+  
+    const startDate = new Date(year, month - 1, 1); // Start of the month
+    const endDate = new Date(year, month, 0, 23, 59, 59, 999); // End of the month, inclusive
+  
+    console.log("Monthly Detailed Params:", { userId, year, month });
+    console.log("Date Range:", { startDate, endDate });
+  
+    try {
+      // Find expenses matching the userId and date range
+      const expenses = await Expense.find({
+        userId: new mongoose.Types.ObjectId(userId),
+        date: { $gte: startDate, $lte: endDate },
+      }).exec();
+  
+      console.log("Detailed Monthly Expenses:", expenses);
+      res.json(expenses); // Send back the raw expense details
+    } catch (error) {
+      console.error("Error fetching detailed monthly expenses:", error);
+      res.status(500).json({ error: "Failed to fetch monthly detailed expenses." });
+    }
+  });
   
   
 export default expenseRouter;

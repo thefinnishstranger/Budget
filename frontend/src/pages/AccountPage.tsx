@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import FullYearSpending from "../components/FullYearSpending";
 import MonthlySpendingChart from "../components/MonthlySpendingChart";
 import ExpenseInput from "../components/ExpenseInput";
+import expenseService from "../services/expenseService.js"
 
 const AccountPage: React.FC = () => {
   const monthNames = [
@@ -15,6 +16,63 @@ const AccountPage: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedMonth, setSelectedMonth] = useState(currentMonthNumber);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [topCategories, setTopCategories] = useState<{ category: string; total: number }[]>([]);
+const [biggestPurchases, setBiggestPurchases] = useState<{ description: string; cost: number; date: string }[]>([]);
+
+
+  const getUserId = ():string | null => {
+    const user = localStorage.getItem("loggedUser");
+    if (!user) {
+      return null
+    }
+    const parsedUser = JSON.parse(user);
+    return parsedUser.userId;
+  }
+
+  const fetchMonthlyInsights = async () => {
+    try {
+      const userId = getUserId();
+      if (!userId) {
+        throw new Error("User ID not found.");
+      }
+  
+      const expenses = await expenseService.getMonthlyDetails(userId, selectedYear, selectedMonth + 1);
+  
+      // Calculate category totals
+      const categoryTotals: Record<string, number> = {};
+      expenses.forEach((expense: { category: string; cost: number }) => {
+        categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.cost;
+      });
+  
+      // Get top categories with totals
+      const sortedCategories = Object.entries(categoryTotals)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 5)
+        .map(([category, total]) => ({ category, total })); // Include total spent
+  
+      setTopCategories(sortedCategories);
+  
+      // Get top purchases with date
+      const sortedPurchases = expenses
+        .sort((a: { cost: number }, b: { cost: number }) => b.cost - a.cost)
+        .slice(0, 5)
+        .map((expense: { category: string; cost: number; date: string }) => ({
+          description: expense.category,
+          cost: expense.cost,
+          date: new Date(expense.date).toLocaleDateString(), // Format date
+        }));
+  
+      setBiggestPurchases(sortedPurchases);
+    } catch (error) {
+      console.error("Error fetching monthly insights:", error);
+    }
+  };
+  
+  
+
+  useEffect(() => {
+    fetchMonthlyInsights();
+  }, [selectedYear, selectedMonth, currentYear, currentMonthNumber])
 
   useEffect(() => {
     if (selectedYear === currentYear) {
@@ -101,28 +159,53 @@ const AccountPage: React.FC = () => {
 
       {/* Biggest Spending Categories and Purchases */}
       <div className="shadow-md grid grid-cols-1 md:grid-cols-2 bg-slate-100 p-8 mt-24 rounded-lg shadow-sm">
-        <div className="p-6 text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Top Spending Categories
-          </h2>
-          <ul className=" text-lg space-y-2">
-            <li>1. Housing</li>
-            <li>2. Food & Dining</li>
-            <li>3. Transportation</li>
-            <li>4. Utilities</li>
-            <li>5. Entertainment</li>
-          </ul>
+      <div className="p-6 text-center bg-white rounded-lg shadow-md">
+  <h2 className="text-3xl font-bold mb-7 text-gray-800">
+    Top Spending Categories in {monthNames[selectedMonth]}
+  </h2>
+  <ul className="space-y-4">
+    {topCategories.map((categoryData, index) => (
+      <li
+        key={index}
+        className="flex justify-between items-center p-4 border border-gray-200 rounded-lg"
+      >
+        <span className="font-medium text-lg text-gray-700">
+          {categoryData.category}
+        </span>
+        <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold">
+          ${categoryData.total.toFixed(2)}
+        </span>
+      </li>
+    ))}
+  </ul>
+</div>
+
+
+<div className="p-6 text-center bg-white rounded-lg shadow-md">
+  <h2 className="text-3xl font-bold mb-7 text-gray-800">
+    Top Purchases in {monthNames[selectedMonth]}
+  </h2>
+  <ul className="space-y-4">
+    {biggestPurchases.map((purchase, index) => (
+      <li
+        key={index}
+        className="flex flex-col md:flex-row justify-between items-center p-4 border border-gray-200 rounded-lg"
+      >
+        <div className="flex items-center space-x-4">
+          <div>
+            <p className="font-medium text-lg text-gray-700">{purchase.description}</p>
+            <p className="text-sm text-gray-500">Purchased on {purchase.date}</p>
+          </div>
         </div>
-        <div className="p-6 text-center">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Top Purchases</h2>
-          <ul className=" text-lg space-y-2">
-            <li>1. New Laptop</li>
-            <li>2. Car Insurance</li>
-            <li>3. Monthly Rent</li>
-            <li>4. Groceries</li>
-            <li>5. Phone Bill</li>
-          </ul>
-        </div>
+        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold mt-3 md:mt-0">
+          ${purchase.cost.toFixed(2)}
+        </span>
+      </li>
+    ))}
+  </ul>
+</div>
+
+
       </div>
 
       {/* Year Selector and Full Year Spending */}
