@@ -1,0 +1,19 @@
+app = "backend-wispy-firefly-9646"
+primary_region = "dfw"
+
+[build]
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+  [[http_service.http_routes]]
+    path = "/*"
+    destination_port = 3000
+
+[env]
+  PORT = "3000" # Make sure the app respects this port.

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ApexCharts from "apexcharts";
-import expenseService from "../services/expenseService.js";
+import expenseService from "../services/expenseService";
 
 interface FullYearSpendingProps {
   selectedYear: number;

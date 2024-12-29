@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import expenseService from "../services/expenseService.js"
+import expenseService from "../services/expenseService";
 
 const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const categories = [
@@ -16,28 +16,34 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     "Other",
   ];
 
-  const [selectedCategory, setSelectedCategory] = useState(categories[10]); // State for selected category
+  const [selectedCategory, setSelectedCategory] = useState(categories[10]); // Default to "Other"
   const [cost, setCost] = useState("");
   const [date, setDate] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const category = selectedCategory;
+    const expenseAmount = parseFloat(cost); // Convert cost to a number
+    const newExpense = { category, cost: expenseAmount, date };
+
+    try {
+      await expenseService.addExpense(newExpense);
+      onClose(); // Close the modal after successful submission
+    } catch (error: unknown) {
+      console.error("Error creating expense", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg p-6 w-96 shadow-lg">
         <h2 className="text-xl font-semibold mb-4">Add a New Expense</h2>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const category = selectedCategory;
-            console.log("Expense Submitted:", { selectedCategory, cost, date });
-            setIsSubmitting(true)
-            const newExpense = {category, cost, date};
-            expenseService.createExpense(newExpense)
-              .then(() => onClose())
-              .catch((error) => console.error("Error creating expense", error))
-              setIsSubmitting(false)
-          }}
-        >
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               className="block text-sm font-medium text-gray-700 mb-1"
@@ -106,6 +112,7 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             <button
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded"
+              disabled={isSubmitting}
             >
               {isSubmitting ? "Saving..." : "Save Expense"}
             </button>

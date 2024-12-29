@@ -12,7 +12,7 @@ import logo from "/logo.png";
 import icon from "/unknownIcon.png";
 import { useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { setToken } from "../services/accountService.js";
+import { setToken } from "../services/accountService";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -63,16 +63,16 @@ export default function NavBar() {
     };
   }, []);
 
-  const handleLogout = (e) => {
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     window.localStorage.removeItem("loggedUser"); // Clear localStorage
     setUser(null); // Clear user state
-    setToken(null); // Clear token
+    setToken(""); // Clear token
     navigate("/"); // Redirect to home
     console.log("User logged out");
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     navigate("/login");
   };

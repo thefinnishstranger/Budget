@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import FullYearSpending from "../components/FullYearSpending";
 import MonthlySpendingChart from "../components/MonthlySpendingChart";
 import ExpenseInput from "../components/ExpenseInput";
-import expenseService from "../services/expenseService.js"
+import expenseService from "../services/expenseService";
+import { MonthlyDetails } from "../services/expenseService";
 
 const AccountPage: React.FC = () => {
   const monthNames = [
@@ -29,44 +30,50 @@ const [biggestPurchases, setBiggestPurchases] = useState<{ description: string; 
     return parsedUser.userId;
   }
 
-  const fetchMonthlyInsights = async () => {
-    try {
-      const userId = getUserId();
-      if (!userId) {
-        throw new Error("User ID not found.");
-      }
-  
-      const expenses = await expenseService.getMonthlyDetails(userId, selectedYear, selectedMonth + 1);
-  
-      // Calculate category totals
-      const categoryTotals: Record<string, number> = {};
-      expenses.forEach((expense: { category: string; cost: number }) => {
-        categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.cost;
-      });
-  
-      // Get top categories with totals
-      const sortedCategories = Object.entries(categoryTotals)
-        .sort(([, a], [, b]) => b - a)
-        .slice(0, 5)
-        .map(([category, total]) => ({ category, total })); // Include total spent
-  
-      setTopCategories(sortedCategories);
-  
-      // Get top purchases with date
-      const sortedPurchases = expenses
-        .sort((a: { cost: number }, b: { cost: number }) => b.cost - a.cost)
-        .slice(0, 5)
-        .map((expense: { category: string; cost: number; date: string }) => ({
-          description: expense.category,
-          cost: expense.cost,
-          date: new Date(expense.date).toLocaleDateString(), // Format date
-        }));
-  
-      setBiggestPurchases(sortedPurchases);
-    } catch (error) {
-      console.error("Error fetching monthly insights:", error);
+  // Update fetchMonthlyInsights
+const fetchMonthlyInsights = async () => {
+  try {
+    const userId = getUserId();
+    if (!userId) {
+      throw new Error("User ID not found.");
     }
-  };
+
+    const expenses: MonthlyDetails[] = await expenseService.getMonthlyDetails(
+      userId,
+      selectedYear,
+      selectedMonth + 1
+    );
+
+    // Calculate category totals
+    const categoryTotals: Record<string, number> = {};
+    expenses.forEach((expense) => {
+      categoryTotals[expense.category] =
+        (categoryTotals[expense.category] || 0) + expense.cost;
+    });
+
+    // Get top categories with totals
+    const sortedCategories = Object.entries(categoryTotals)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 5)
+      .map(([category, total]) => ({ category, total }));
+
+    setTopCategories(sortedCategories);
+
+    // Get top purchases with date
+    const sortedPurchases = expenses
+      .sort((a, b) => b.cost - a.cost)
+      .slice(0, 5)
+      .map((expense) => ({
+        description: expense.category,
+        cost: expense.cost,
+        date: new Date(expense.date).toLocaleDateString(),
+      }));
+
+    setBiggestPurchases(sortedPurchases);
+  } catch (error) {
+    console.error("Error fetching monthly insights:", error);
+  }
+};
   
   
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { login } from "../services/accountService.js";
+import { login } from "../services/accountService";
 import { useNavigate } from "react-router";
 
 export default function LoginPage() {
@@ -7,15 +7,14 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleEmailChange = (e) => {
-    e.preventDefault();
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
-
-  const handlePasswordChange = (e) => {
-    e.preventDefault();
+  
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
+  
 
   return (
     <>

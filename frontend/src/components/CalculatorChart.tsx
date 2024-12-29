@@ -90,8 +90,8 @@ interface BudgetCategories {
        
                   fontSize: '24px',
                   offsetY: -20,
-                  formatter: function (value: number) {
-                    return value + "k";
+                  formatter: function (val: string) {
+                    return `$${parseFloat(val).toFixed(2)}`;
                   },
                 },
               },
