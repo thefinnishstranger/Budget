@@ -50,29 +50,62 @@ export default function MainPage() {
 
   return (
     <>
-      <div className='flex justify-between items-center h-screen px-6'>
+{/* Mobile/Tablet Design */}
+<div className="md:hidden h-screen flex flex-col">
+        <div
+          className="relative h-screen bg-cover bg-center"
+          style={{ backgroundImage: "url('/background4.jpg')" }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+          <div className="relative z-10 text-white flex flex-col justify-center items-center h-full text-center">
+            <header className="text-4xl font-extrabold">
+              Empower Your Financial Journey
+            </header>
+            <p className="text-lg mt-4 max-w-md">
+              Take control of your finances effortlessly and make informed decisions with our powerful tools.
+            </p>
+            <div className="mt-5">
+              <button
+                onClick={startClick}
+                className="py-3 px-6 bg-blue-700 text-white font-bold rounded-lg hover:bg-blue-600 transition"
+              >
+                Get started
+              </button>
+              <button
+                onClick={aboutUsClick}
+                className="ml-4 py-3 px-6 bg-gray-100 text-black border border-gray-300 rounded-lg hover:bg-gray-200 transition"
+              >
+                About us
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Design */}
+      <div className="hidden md:flex justify-between items-center h-screen px-6">
         <div className="flex flex-col w-full md:w-1/2">
           <header className="text-5xl font-extrabold tracking-tight">
             Empower Your Financial Journey
           </header>
-          <p className='text-xl mt-5'>
+          <p className="text-xl mt-5">
             Take control of your finances effortlessly and make informed decisions with our powerful tools.
           </p>
-          <div className='flex mt-8'>
+          <div className="flex mt-8">
             <button
-              type='submit'
+              type="submit"
               onClick={startClick}
               className="py-3 bg-blue-700 text-white font-bold rounded w-1/3 md:w-1/5 transform hover:bg-blue-600 transition duration-200 ease-in-out"
             >
               Get started
             </button>
             <button
-              type='submit'
+              type="submit"
               onClick={aboutUsClick}
-              className='flex items-center mx-5 px-4 py-2 bg-transparent text-black font-semibold'
+              className="flex items-center mx-5 px-4 py-2 bg-transparent text-black font-semibold"
             >
               About us
-              <ArrowRightIcon className='h-5 w-5 ml-2' />
+              <ArrowRightIcon className="h-5 w-5 ml-2" />
             </button>
           </div>
         </div>
