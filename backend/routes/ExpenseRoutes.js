@@ -11,10 +11,15 @@ expenseRouter.get("/", async (request, response) => {
 
 expenseRouter.post("/", async (request, response) => {
     const { cost, category, date, userId } = request.body;
-    
-    if (!userId) {
-        return res.status(400).json({ error: "User ID is required." });
+  
+
+      if (!userId) {
+        return response.status(400).json({ error: "User ID is required." });
       }
+      if (!cost || !category || !date) {
+        return response.status(400).json({ error: "Cost, category, and date are required." });
+      }
+      
     const expense = new Expense({
         cost,
         category,
@@ -24,10 +29,10 @@ expenseRouter.post("/", async (request, response) => {
 
     try {
         const savedExpense = await expense.save();
-        res.status(201).json(savedExpense);
+        response.status(201).json(savedExpense);
       } catch (error) {
         console.error("Error saving expense:", error);
-        res.status(500).json({ error: "Failed to save expense" });
+        response.status(500).json({ error: "Failed to save expense" });
       }
 })
 

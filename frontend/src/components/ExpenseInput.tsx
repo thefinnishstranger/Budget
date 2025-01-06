@@ -24,10 +24,18 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
+  
+    const user = localStorage.getItem("loggedUser");
+     // Example: Retrieve from local storage
+    console.log(user, "here is userID");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      const userId = parsedUser.userId;
+      console.log("here is user id finally", userId);
+         
     const category = selectedCategory;
     const expenseAmount = parseFloat(cost); // Convert cost to a number
-    const newExpense = { category, cost: expenseAmount, date };
+    const newExpense = { category, cost: expenseAmount, date, userId }; // Include userId 
 
     try {
       await expenseService.addExpense(newExpense);
@@ -37,7 +45,11 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     } finally {
       setIsSubmitting(false);
     }
+    }
+  
+    
   };
+  
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">

@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const expenseUrl = "http://localhost:5001/api/expenses";
+const expenseUrl = "https://backend-wispy-firefly-9646.fly.dev/api/expenses";
 
 interface Expense {
   cost: number;
   category: string;
   date: string;
-  userId: string;
+  userId: string | null;
 }
 
 interface MonthlySpending {
@@ -68,7 +68,7 @@ const getAllExpenses = async (): Promise<Expense[]> => {
   }
 };
 
-const addExpense = async (expense: Omit<Expense, "userId">): Promise<Expense> => {
+const addExpense = async (expense: Expense): Promise<Expense> => {
   try {
     const response = await axios.post<Expense>(expenseUrl, expense); // Axios handles JSON stringifying internally
     return response.data; // Return the added expense data
@@ -103,3 +103,4 @@ export default {
   getYearlySpending,
   getMonthlyDetails,
 };
+

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const loginUrl = "http://localhost:5001/api/login";
+const loginUrl = "https://backend-wispy-firefly-9646.fly.dev/api/login";
 
 let token: string | null = null;
 
@@ -40,3 +40,4 @@ const setToken = (newToken: string): void => {
 };
 
 export { login, setToken };
+
