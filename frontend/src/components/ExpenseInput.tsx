@@ -46,7 +46,8 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
     try {
       await expenseService.addExpense(newExpense, token);
-      onClose(); // Close the modal after successful submission
+      onClose();
+      window.location.reload();
     } catch (error: unknown) {
       console.error("Error creating expense", error);
     } finally {

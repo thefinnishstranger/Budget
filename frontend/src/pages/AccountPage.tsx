@@ -95,11 +95,6 @@ const getUsername = () => {
     }
   }, [selectedYear, currentYear, currentMonthNumber]);
 
-  useEffect(() => {
-    
-  })
-
-
   return (
     <div className="bg-white min-h-screen">
 
