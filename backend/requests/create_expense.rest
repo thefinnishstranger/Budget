@@ -1,0 +1,11 @@
+POST https://backend-wispy-firefly-9646.fly.dev/api/expenses
+
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pa29sYXMyNkBtZS5jb20iLCJpZCI6IjY3NmM0OTM0Mzk0ZGFlOWY0NzNhMDNhOSIsImlhdCI6MTczNjIwNjc5MSwiZXhwIjoxNzM2MjEwMzkxfQ.yf8-hLEjHnLJ9faqqMy4uK3h2SXpQAQx5wBGMjs895M
+
+{
+    "cost": 10,
+    "category": "Other",
+    "date": "2025-01-06T15:45:12.345",
+    "userId": "676c4934394dae9f473a03a9"
+}

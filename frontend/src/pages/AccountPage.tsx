@@ -18,7 +18,7 @@ const AccountPage: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState(currentMonthNumber);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [topCategories, setTopCategories] = useState<{ category: string; total: number }[]>([]);
-const [biggestPurchases, setBiggestPurchases] = useState<{ description: string; cost: number; date: string }[]>([]);
+  const [biggestPurchases, setBiggestPurchases] = useState<{ description: string; cost: number; date: string }[]>([]);
 
 
   const getUserId = ():string | null => {
@@ -74,6 +74,12 @@ const fetchMonthlyInsights = async () => {
     console.error("Error fetching monthly insights:", error);
   }
 };
+
+const getUsername = () => {
+  const user = localStorage.getItem("loggedUser");
+  if (!user) return "stranger";
+  return JSON.parse(user).name;
+}
   
   
 
@@ -89,6 +95,11 @@ const fetchMonthlyInsights = async () => {
     }
   }, [selectedYear, currentYear, currentMonthNumber]);
 
+  useEffect(() => {
+    
+  })
+
+
   return (
     <div className="bg-white min-h-screen">
 
@@ -97,7 +108,7 @@ const fetchMonthlyInsights = async () => {
 
         <div className="p-8">
         <h1 className="text-4xl font-extrabold text-gray-800 tracking-tight">
-          Welcome to Your Dashboard, account.name!
+          Welcome to Your Dashboard, {getUsername()}
         </h1>
         <p className="text-lg text-gray-700 mt-4 max-w-2xl mx-auto">
           Manage your finances efficiently. Track your monthly expenses, review your top spending categories, and gain insights into your financial health.

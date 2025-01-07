@@ -69,6 +69,7 @@ export default function NavBar() {
     setUser(null); // Clear user state
     setToken(""); // Clear token
     navigate("/"); // Redirect to home
+    window.location.reload();
     console.log("User logged out");
   };
 
@@ -84,6 +85,33 @@ export default function NavBar() {
     }
     return true;
   });
+
+  const properOption = () => {
+    if (user) {
+      return (
+        <button
+        className="block px-4 py-2 text-sm text-gray-700"
+        onClick={handleLogout}
+      >
+        Sign out
+      </button>
+      )
+    } else {
+      return (
+<button
+                      className="block px-4 py-2 text-sm text-gray-700"
+                      onClick={handleLogin}
+                    >
+                      Sign in
+                    </button>
+      )
+    } 
+  }
+
+  useEffect(() => {
+    refetch();
+  }, [loggedUserJSON]); // Run refetch whenever loggedUserJSON changes
+  
 
   return (
     <Disclosure as="nav" className="bg-green-500">
@@ -151,21 +179,7 @@ export default function NavBar() {
               </div>
               <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none">
                 <MenuItem>
-                  {user ? (
-                    <button
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      onClick={handleLogout}
-                    >
-                      Sign out
-                    </button>
-                  ) : (
-                    <button
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      onClick={handleLogin}
-                    >
-                      Sign in
-                    </button>
-                  )}
+                  {properOption()}
                 </MenuItem>
               </MenuItems>
             </Menu>

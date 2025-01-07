@@ -15,11 +15,29 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     .then(() => console.log("Connected to MongoDB"))
     .catch((error) => console.error("Error connecting to MongoDB:", error))
 
-    app.use(cors({
-        origin: 'https://frontend-young-snow-8341.fly.dev', // Frontend origin
-        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
-        credentials: true, // If sending cookies or credentials
-      }));
+    app.use(cors());
+    
+    app.use(function(req, res, next) {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      next();
+    });
+
+const tokenExtractor = (request, response, next) => {
+  const authorization = request.get("authorization");
+  if (authorization && authorization.startsWith("Bearer ")) {
+    request.token = authorization.replace("Bearer ", "");
+    console.log(request.token);
+  } else {
+    request.token = null;
+  }
+  next();
+}
+
+app.use(tokenExtractor);
+
+
 
 app.use("/api", accountRouter);
 app.use("/api/expenses", expenseRouter);

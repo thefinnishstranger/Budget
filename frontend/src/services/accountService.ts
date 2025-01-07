@@ -28,6 +28,7 @@ const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
     console.log("Login successful:", response.data);
     setToken(response.data.token); // Set token immediately
     return response.data; // Return user data for state update
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error("Login error:", error.response?.data || error.message);
     throw error; // Propagate error for handling

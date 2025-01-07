@@ -1,6 +1,7 @@
 import express from "express";
 import Expense from "../schemas/ExpenseSchema.js";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 
 const expenseRouter = express.Router();
 
@@ -11,13 +12,23 @@ expenseRouter.get("/", async (request, response) => {
 
 expenseRouter.post("/", async (request, response) => {
     const { cost, category, date, userId } = request.body;
-  
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
-      if (!userId) {
-        return response.status(400).json({ error: "User ID is required." });
-      }
-      if (!cost || !category || !date) {
-        return response.status(400).json({ error: "Cost, category, and date are required." });
+    if (decodedToken) {
+      return console.log("success");
+    }
+    
+
+    if (!decodedToken) {
+      return response.json(401).json({ error: "token invalid" });
+    }
+
+    if (!userId) {
+      return response.status(400).json({ error: "User ID is required." });
+    }
+
+    if (!cost || !category || !date) {
+      return response.status(400).json({ error: "Cost, category, and date are required." });
       }
       
     const expense = new Expense({

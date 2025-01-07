@@ -25,6 +25,7 @@ export interface MonthlyDetails {
   date: string;
 }
 
+
 const getMonthlySpending = async (
   userId: string,
   year: number,
@@ -68,15 +69,24 @@ const getAllExpenses = async (): Promise<Expense[]> => {
   }
 };
 
-const addExpense = async (expense: Expense): Promise<Expense> => {
-  try {
-    const response = await axios.post<Expense>(expenseUrl, expense); // Axios handles JSON stringifying internally
-    return response.data; // Return the added expense data
-  } catch (error) {
-    console.error("Error adding expense:", error);
-    throw error;
+const addExpense = async (
+  expenseData: { cost: number; category: string; date: string; userId: string },
+  token: string | null
+) => {
+  if (!token) {
+    throw new Error("Token is missing.");
   }
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.post(expenseUrl, expenseData, config);
+  return response.data;
 };
+
 
 const getMonthlyDetails = async (
   userId: string,

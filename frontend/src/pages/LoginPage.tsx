@@ -40,7 +40,8 @@ export default function LoginPage() {
                 .then((data) => {
                   window.localStorage.setItem("loggedUser", JSON.stringify(data)); // Save full user data
                   console.log("Login successful:", data);
-                  navigate("/account"); // Redirect to the account page
+                  navigate("/account");
+                  window.location.reload();
                 })
                 .catch((error) => console.error("Login error:", error));
               setEmail("");

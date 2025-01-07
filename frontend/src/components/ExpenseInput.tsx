@@ -21,6 +21,12 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [date, setDate] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const getToken = () => {
+    const user = localStorage.getItem("loggedUser");
+    if (!user) return null;
+    return JSON.parse(user).token;
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -36,9 +42,10 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const category = selectedCategory;
     const expenseAmount = parseFloat(cost); // Convert cost to a number
     const newExpense = { category, cost: expenseAmount, date, userId }; // Include userId 
+    const token = getToken();
 
     try {
-      await expenseService.addExpense(newExpense);
+      await expenseService.addExpense(newExpense, token);
       onClose(); // Close the modal after successful submission
     } catch (error: unknown) {
       console.error("Error creating expense", error);

@@ -1,0 +1,7 @@
+POST https://backend-wispy-firefly-9646.fly.dev/api/login
+Content-Type: application/json 
+
+{
+    "email": "nikolas26@me.com",
+    "password": "nikolas01"
+}

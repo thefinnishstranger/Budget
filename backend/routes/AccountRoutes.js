@@ -8,6 +8,7 @@ const accountRouter = express.Router();
 // Login route
 accountRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
+  console.log("login attempt:", email, " ", password);
 
   try {
     const user = await Account.findOne({ email });
@@ -26,8 +27,11 @@ accountRouter.post("/login", async (req, res) => {
     };
 
     const token = jwt.sign(userForToken, process.env.SECRET || "default_secret", {
-      expiresIn: "1h",
+      expiresIn: 60 * 60,
     });
+
+    console.log(token);
+    
 
     res.status(200).send({
       token,
