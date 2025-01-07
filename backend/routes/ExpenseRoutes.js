@@ -11,11 +11,15 @@ expenseRouter.get("/", async (request, response) => {
 })
 
 expenseRouter.post("/", async (request, response) => {
+    console.log("trying to add the new expense");
+    
     const { cost, category, date, userId } = request.body;
+    console.log("expenses on the backend ", cost, category, date, userId);
+    
     const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
     if (decodedToken) {
-      return console.log("success");
+      return response.json({ error: "token valid" });
     }
 
     if (!decodedToken) {

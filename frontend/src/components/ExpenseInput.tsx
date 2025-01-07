@@ -33,20 +33,23 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   
     const user = localStorage.getItem("loggedUser");
      // Example: Retrieve from local storage
-    console.log(user, "here is userID");
     if (user) {
       const parsedUser = JSON.parse(user);
       const userId = parsedUser.userId;
-      console.log("here is user id finally", userId);
-         
     const category = selectedCategory;
     const expenseAmount = parseFloat(cost); // Convert cost to a number
     const newExpense = { category, cost: expenseAmount, date, userId }; // Include userId 
+    console.log("here is the new expense ", newExpense);
+    console.log("here is the user id ", userId);
     const token = getToken();
+    console.log("here is the user token ", token);
+    
 
     try {
+      console.log("trying to post it to backend...");
       await expenseService.addExpense(newExpense, token);
       onClose();
+      console.log("successfully posted");
     } catch (error: unknown) {
       console.error("Error creating expense", error);
     } finally {

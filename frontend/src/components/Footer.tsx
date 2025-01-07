@@ -36,7 +36,6 @@ const Footer = () => {
     const loggedUserJSON = window.localStorage.getItem("loggedUser");
     if (loggedUserJSON) {
       setUser(JSON.parse(loggedUserJSON));
-      console.log("User updated:", JSON.parse(loggedUserJSON));
     } else {
       setUser(null);
       console.log("No user found in localStorage");

@@ -38,7 +38,6 @@ export default function NavBar() {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
       setToken(user.token);
-      console.log("User state updated:", user);
     } else {
       setUser(null);
       console.log("No user found in localStorage");
