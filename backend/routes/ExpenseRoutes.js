@@ -17,7 +17,6 @@ expenseRouter.post("/", async (request, response) => {
     if (decodedToken) {
       return console.log("success");
     }
-    
 
     if (!decodedToken) {
       return response.json(401).json({ error: "token invalid" });
