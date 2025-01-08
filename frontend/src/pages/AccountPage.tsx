@@ -85,6 +85,7 @@ const getUsername = () => {
 
   useEffect(() => {
     fetchMonthlyInsights();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedYear, selectedMonth, currentYear, currentMonthNumber])
 
   useEffect(() => {

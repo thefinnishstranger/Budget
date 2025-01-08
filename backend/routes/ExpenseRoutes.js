@@ -18,8 +18,10 @@ expenseRouter.post("/", async (request, response) => {
     
     const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
+    console.log("here is the token", request.token);
+
     if (decodedToken) {
-      return response.json({ error: "token valid" });
+      return console.log("token valid");
     }
 
     if (!decodedToken) {
