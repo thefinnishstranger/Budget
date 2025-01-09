@@ -41,7 +41,6 @@ export default function LoginPage() {
                   window.localStorage.setItem("loggedUser", JSON.stringify(data)); // Save full user data
                   console.log("Login successful:", data);
                   navigate("/account");
-                  window.location.reload();
                 })
                 .catch((error) => console.error("Login error:", error));
               setEmail("");

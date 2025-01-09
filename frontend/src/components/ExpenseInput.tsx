@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import expenseService from "../services/expenseService";
 
-const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+const ExpenseInput: React.FC<{ onClose: () => void; onExpenseAdded: () => void }> = ({ onClose, onExpenseAdded }) => {
   const categories = [
     "Savings",
     "Food",
@@ -48,6 +48,7 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     try {
       console.log("trying to post it to backend...");
       await expenseService.addExpense(newExpense, token);
+      onExpenseAdded();
       onClose();
       console.log("successfully posted");
     } catch (error: unknown) {

@@ -10,6 +10,12 @@ const AccountPage: React.FC = () => {
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December",
   ];
+
+  const [chartRefresh, setChartRefresh] = useState(false);
+
+  const handleExpenseAdded = () => {
+    setChartRefresh((prev) => !prev);
+  }
   
   const years = [2020, 2021, 2022, 2023, 2024, 2025];
 
@@ -133,7 +139,7 @@ const getUsername = () => {
           Add Expense
         </button>
         {isModalOpen && (
-          <ExpenseInput onClose={() => setIsModalOpen(false)} />
+          <ExpenseInput onClose={() => setIsModalOpen(false)} onExpenseAdded={handleExpenseAdded} />
         )}
       </div>
       </div>
@@ -190,7 +196,7 @@ const getUsername = () => {
 
       {/* Monthly Chart */}
       <div className="w-full max-w-7xl mx-auto">
-        <MonthlySpendingChart currentYear={selectedYear} currentMonth={selectedMonth} />
+        <MonthlySpendingChart currentYear={selectedYear} currentMonth={selectedMonth} chartRefresh={chartRefresh} />
       </div>
 
       {/* Biggest Spending Categories and Purchases */}
@@ -264,7 +270,7 @@ const getUsername = () => {
           </select>
         </div>
         <div className="mt-6 mb-20 w-full max-w-7xl mx-auto">
-          <FullYearSpending selectedYear={selectedYear} />
+          <FullYearSpending selectedYear={selectedYear} chartRefresh={chartRefresh} />
         </div>
       </div>
     </div>

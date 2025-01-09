@@ -5,9 +5,10 @@ import expenseService from "../services/expenseService";
 interface MonthlySpendingChartProps {
   currentYear: number;
   currentMonth: number;
+  chartRefresh: boolean;
 }
 
-const MonthlySpendingChart: React.FC<MonthlySpendingChartProps> = ({ currentYear, currentMonth }) => {
+const MonthlySpendingChart: React.FC<MonthlySpendingChartProps> = ({ currentYear, currentMonth, chartRefresh }) => {
   const [dailySpending, setDailySpending] = useState<number[]>([]);
 
   const getUserId = () => {
@@ -22,33 +23,29 @@ const MonthlySpendingChart: React.FC<MonthlySpendingChartProps> = ({ currentYear
     return new Date(year, month + 1, 0).getDate(); // Total days in month
   };
 
-  const thisMonthSpending = async () => {
-    try {
-      const userId = getUserId();
-      if (!userId) throw new Error("User ID not found.");
-
-      const response = await expenseService.getMonthlySpending(userId, currentYear, currentMonth + 1);
-
-      const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-      
-      const spending = Array(daysInMonth).fill(0); // Initialize array with 0s for each day
-
-      // Populate spending array with data
-      response.forEach((expense: { day: number; total: number }) => {
-        spending[expense.day - 1] = parseFloat(expense.total.toFixed(2)); // 0-based index
-      });
-
-      setDailySpending(spending);
-    } catch (error) {
-      console.error("Error fetching this month's spending:", error);
-      setDailySpending([]); // Fallback to empty data
-    }
-  };
-
   useEffect(() => {
+    const thisMonthSpending = async () => {
+      try {
+        const userId = getUserId();
+        if (!userId) throw new Error("User ID not found.");
+
+        const response = await expenseService.getMonthlySpending(userId, currentYear, currentMonth + 1);
+        const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+        const spending = Array(daysInMonth).fill(0);
+
+        response.forEach((expense: { day: number; total: number }) => {
+          spending[expense.day - 1] = parseFloat(expense.total.toFixed(2)); // 0-based index
+        });
+
+        setDailySpending(spending);
+      } catch (error) {
+        console.error("Error fetching this month's spending:", error);
+        setDailySpending([]);
+      }
+    };
+
     thisMonthSpending();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentYear, currentMonth]);
+  }, [currentYear, currentMonth, chartRefresh]);
 
   useEffect(() => {
     const days = Array.from({ length: getDaysInMonth(currentYear, currentMonth) }, (_, i) => i + 1);

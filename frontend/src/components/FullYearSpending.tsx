@@ -4,9 +4,10 @@ import expenseService from "../services/expenseService";
 
 interface FullYearSpendingProps {
   selectedYear: number;
+  chartRefresh: boolean;
 }
 
-const FullYearSpending: React.FC<FullYearSpendingProps> = ({ selectedYear }) => {
+const FullYearSpending: React.FC<FullYearSpendingProps> = ({ selectedYear, chartRefresh }) => {
   const [spending, setSpending] = useState<number[]>(Array(12).fill(0)); // Initialize with 12 months of 0 spending
 
   const getUserId = (): string | null => {
@@ -36,7 +37,7 @@ const FullYearSpending: React.FC<FullYearSpendingProps> = ({ selectedYear }) => 
 
   useEffect(() => {
     fetchYearlySpending(); // Fetch spending data when the selected year changes
-  }, [selectedYear]);
+  }, [selectedYear, chartRefresh]);
 
   useEffect(() => {
     const options = {
