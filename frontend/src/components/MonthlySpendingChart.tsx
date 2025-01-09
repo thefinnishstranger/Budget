@@ -30,6 +30,7 @@ const MonthlySpendingChart: React.FC<MonthlySpendingChartProps> = ({ currentYear
       const response = await expenseService.getMonthlySpending(userId, currentYear, currentMonth + 1);
 
       const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+      
       const spending = Array(daysInMonth).fill(0); // Initialize array with 0s for each day
 
       // Populate spending array with data
@@ -46,6 +47,7 @@ const MonthlySpendingChart: React.FC<MonthlySpendingChartProps> = ({ currentYear
 
   useEffect(() => {
     thisMonthSpending();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentYear, currentMonth]);
 
   useEffect(() => {

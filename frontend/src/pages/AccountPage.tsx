@@ -10,9 +10,15 @@ const AccountPage: React.FC = () => {
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December",
   ];
+  
+  const years = [2020, 2021, 2022, 2023, 2024, 2025];
 
   const currentYear = new Date().getFullYear();
   const currentMonthNumber = new Date().getMonth();
+
+  if (years[years.length - 1] !== currentYear) {
+    years.push(currentYear);
+  }
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedMonth, setSelectedMonth] = useState(currentMonthNumber);
@@ -28,7 +34,7 @@ const AccountPage: React.FC = () => {
     }
     const parsedUser = JSON.parse(user);
     return parsedUser.userId;
-  }
+  }  
 
   // Update fetchMonthlyInsights
 const fetchMonthlyInsights = async () => {
@@ -78,6 +84,7 @@ const fetchMonthlyInsights = async () => {
 const getUsername = () => {
   const user = localStorage.getItem("loggedUser");
   if (!user) return "stranger";
+  console.log(JSON.parse(user).token);
   return JSON.parse(user).name;
 }
   
@@ -94,7 +101,8 @@ const getUsername = () => {
     } else {
       setSelectedMonth(0);
     }
-  }, [selectedYear, currentYear, currentMonthNumber]);
+  }, [selectedYear, currentYear, currentMonthNumber]);  
+  
 
   return (
     <div className="bg-white min-h-screen">
@@ -148,7 +156,7 @@ const getUsername = () => {
 
       {/* Month Selector */}
       <div className="flex justify-center mb-8">
-        <label className="text-lg font-semibold mr-3 text-gray-700">Select Month:</label>
+        <label className="text-lg font-semibold mr-3 text-gray-700">Select Month and Year:</label>
         <select
           className="border-2 border-gray-300 rounded px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={selectedMonth}
@@ -161,6 +169,20 @@ const getUsername = () => {
               disabled={selectedYear === currentYear && index > currentMonthNumber}
             >
               {month}
+            </option>
+          ))}
+        </select>
+        <select
+          className="border-2 border-gray-300 rounded px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          value={selectedYear}
+          onChange={(e) => setSelectedYear(Number(e.target.value))}
+        >
+          {years.map((year, index) => (
+            <option
+              key={index}
+              value={year}
+            >
+              {year}
             </option>
           ))}
         </select>

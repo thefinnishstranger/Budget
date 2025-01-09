@@ -2,9 +2,8 @@ import axios from "axios";
 
 const loginUrl = "https://backend-wispy-firefly-9646.fly.dev/api/login";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let token: string | null = null;
-
-console.log(token);
 
 
 // Interface for login credentials
@@ -21,6 +20,11 @@ interface LoginResponse {
   userId: string;
 }
 
+// Set token for API calls
+const setToken = (newToken: string): void => {
+  token = `Bearer ${newToken}`;
+};
+
 // Login API call
 const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
   try {
@@ -33,11 +37,6 @@ const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
     console.error("Login error:", error.response?.data || error.message);
     throw error; // Propagate error for handling
   }
-};
-
-// Set token for API calls
-const setToken = (newToken: string): void => {
-  token = `Bearer ${newToken}`;
 };
 
 export { login, setToken };

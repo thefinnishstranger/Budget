@@ -1,11 +1,11 @@
-POST https://backend-wispy-firefly-9646.fly.dev/api/expenses
+POST http://localhost:3000/api/expenses/
 
 Content-Type: application/json 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pa29sYXMyNkBtZS5jb20iLCJpZCI6IjY3NmM0OTM0Mzk0ZGFlOWY0NzNhMDNhOSIsImlhdCI6MTczNjIwNDU1MiwiZXhwIjoxNzM2MjA4MTUyfQ.qyy2xW0XWjNwFmu_9jZG704U3e8lRanBISNH7eN4uZI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pa29sYXMyNkBtZS5jb20iLCJpZCI6IjY3NmM0OTM0Mzk0ZGFlOWY0NzNhMDNhOSIsImlhdCI6MTczNjM4MDQ2NiwiZXhwIjoxNzM2Mzg0MDY2fQ.MkMuIAR-L7WKuth8bsaY-P0Ijwvkt_nJvom_3Rxzsl0
 
 {
-    "cost": 10,
-    "category": "Other",
-    "date": "2025-01-06T15:45:12.345",
+    "cost": 20,
+    "category": "Food",
+    "date": "2025-01-08",
     "userId": "676c4934394dae9f473a03a9"
-}
+} 

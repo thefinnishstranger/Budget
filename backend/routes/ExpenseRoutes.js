@@ -1,6 +1,7 @@
 import express from "express";
 import Expense from "../schemas/ExpenseSchema.js";
 import mongoose from "mongoose";
+import Account from "../schemas/AccountSchema.js";
 import jwt from "jsonwebtoken";
 
 const expenseRouter = express.Router();
@@ -11,46 +12,56 @@ expenseRouter.get("/", async (request, response) => {
 })
 
 expenseRouter.post("/", async (request, response) => {
-    console.log("trying to add the new expense");
-    
+  try {
     const { cost, category, date, userId } = request.body;
-    console.log("expenses on the backend ", cost, category, date, userId);
-    
-    const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
-    console.log("here is the token", request.token);
+    console.log("Request body:", { cost, category, date, userId });
 
-    if (decodedToken) {
-      return console.log("token valid");
+    // Verify the token
+    const decodedToken = jwt.verify(request.token, process.env.SECRET || "default_secret");
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: "Token is invalid." });
     }
 
-    if (!decodedToken) {
-      return response.json(401).json({ error: "token invalid" });
+    console.log("Decoded token:", decodedToken);
+
+    // Validate user existence
+    const user = await Account.findById(decodedToken.id);
+    if (!user) {
+      return response.status(400).json({ error: "User not found." });
     }
 
-    if (!userId) {
-      return response.status(400).json({ error: "User ID is required." });
-    }
-
+    // Validate required fields
     if (!cost || !category || !date) {
       return response.status(400).json({ error: "Cost, category, and date are required." });
-      }
-      
-    const expense = new Expense({
-        cost,
-        category,
-        date,
-        userId
-    })
+    }
 
-    try {
-        const savedExpense = await expense.save();
-        response.status(201).json(savedExpense);
-      } catch (error) {
-        console.error("Error saving expense:", error);
-        response.status(500).json({ error: "Failed to save expense" });
-      }
-})
+    // Create a new expense
+    const expense = new Expense({
+      cost,
+      category,
+      date,
+      userId: user._id,
+    });
+
+    // Save the expense and update user's expenses list
+    const savedExpense = await expense.save();
+    user.expenses = user.expenses.concat(savedExpense._id);
+    await user.save();
+
+    response.status(201).json(savedExpense);
+
+  } catch (error) {
+    console.error("Error handling /expenses POST request:", error.message);
+
+    if (error.name === "JsonWebTokenError") {
+      return response.status(401).json({ error: "Token is invalid or expired." });
+    }
+
+    response.status(500).json({ error: "Failed to save expense." });
+  }
+});
+
 
 expenseRouter.get("/:userId/monthly", async (req, res) => {
     const { userId } = req.params;
@@ -59,9 +70,14 @@ expenseRouter.get("/:userId/monthly", async (req, res) => {
     if (!year || !month) {
       return res.status(400).json({ error: "Year and month are required." });
     }
-  
-    const startDate = new Date(year, month - 1, 1); // Start of the month
-    const endDate = new Date(year, month, 0); // End of the month
+    
+    const startDate = new Date(Date.UTC(year, month - 1, 1)); // Start of the month in UTC
+    const endDate = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999)); // End of the month in UTC
+    
+
+    console.log("Date Range:", { startDate, endDate });
+
+    
   
     console.log("Received Params:", { userId, year, month });
     console.log("Date Range:", { startDate, endDate });

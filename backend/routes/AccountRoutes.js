@@ -26,12 +26,9 @@ accountRouter.post("/login", async (req, res) => {
       id: user._id,
     };
 
-    const token = jwt.sign(userForToken, process.env.SECRET || "default_secret", {
+    const token = jwt.sign(userForToken, process.env.SECRET, {
       expiresIn: 60 * 60,
-    });
-
-    console.log(token);
-    
+    });    
 
     res.status(200).send({
       token,

@@ -50,9 +50,10 @@ const ExpenseInput: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       await expenseService.addExpense(newExpense, token);
       onClose();
       console.log("successfully posted");
-      setIsSubmitting(false);
     } catch (error: unknown) {
       console.error("Error creating expense", error);
+    } finally {
+      setIsSubmitting(false);
     }
     }
   

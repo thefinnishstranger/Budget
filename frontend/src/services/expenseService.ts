@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const expenseUrl = "https://backend-wispy-firefly-9646.fly.dev/api/expenses";
+const expenseUrl = "http://localhost:3000/api/expenses";
 
 interface Expense {
   cost: number;
@@ -69,19 +69,25 @@ const getAllExpenses = async (): Promise<Expense[]> => {
   }
 };
 
-const addExpense = async (
-  expenseData: { cost: number; category: string; date: string; userId: string },
-  token: string | null
-) => {
-  if (!token) {
+const addExpense = async (expenseData: Expense, token: string) => {
+  if (!token) { 
     throw new Error("Token is missing.");
   }
+
+  console.log("token in the expense service ", token);
+  
 
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
+
+  console.log("config info ", config);
+
+  console.log("expenseData ", expenseData);
+  
+  
 
   const response = await axios.post(expenseUrl, expenseData, config);
   return response.data;
