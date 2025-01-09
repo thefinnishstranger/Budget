@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const expenseUrl = "http://localhost:3000/api/expenses";
+const expenseUrl = "https://backend-wispy-firefly-9646.fly.dev/api/expenses";
 
 interface Expense {
   cost: number;
