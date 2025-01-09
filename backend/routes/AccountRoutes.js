@@ -47,18 +47,25 @@ accountRouter.post("/register", async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
   try {
+    // Check if user already exists
     const existingUser = await Account.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: "Email already exists" });
     }
 
+    // Hash the password
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(password, saltRounds);
+
+    // Create a new account
     const newAccount = new Account({
       firstName,
       lastName,
       email,
-      passwordHash: await bcrypt.hash(password, 10),
+      passwordHash,
     });
 
+    // Save the account to the database
     const savedAccount = await newAccount.save();
     res.status(201).json({ message: "Account created successfully", account: savedAccount });
   } catch (error) {
@@ -66,6 +73,7 @@ accountRouter.post("/register", async (req, res) => {
     res.status(500).json({ error: "Something went wrong" });
   }
 });
+
 
 accountRouter.get("/accounts", async (request, response) => {
     try {

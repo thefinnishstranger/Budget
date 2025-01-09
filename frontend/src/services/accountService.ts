@@ -1,6 +1,8 @@
 import axios from "axios";
 
 const loginUrl = "https://backend-wispy-firefly-9646.fly.dev/api/login";
+const registerUrl = "https://backend-wispy-firefly-9646.fly.dev/api/register";
+
 
 let token: string | null = null;
 
@@ -27,6 +29,13 @@ interface LoginResponse {
   userId: string;
 }
 
+interface RegisterResponse {
+  token: string;
+  email: string;
+  name: string;
+  userId: string;
+}
+
 // Login API call
 const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
   try {
@@ -41,5 +50,16 @@ const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
   }
 };
 
-export { login, setToken, getToken };
+const register = async (data: { firstName: string; lastName: string; email: string; password: string }): Promise<RegisterResponse> => {
+  try {
+    const response = await axios.post<RegisterResponse>(registerUrl, data);
+    console.log("registration of the account was successful");
+    return response.data
+  } catch (error) {
+    console.error("Registration error:", error);
+    throw error;
+  }
+}
+
+export { login, setToken, getToken, register };
 
