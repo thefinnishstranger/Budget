@@ -2,10 +2,15 @@ import axios from "axios";
 
 const loginUrl = "https://backend-wispy-firefly-9646.fly.dev/api/login";
 
+let token: string | null = null;
+
 // Set token for API calls
 const setToken = (newToken: string): void => {
-  let token: string | null = null;
   token = `Bearer ${newToken}`;
+};
+
+const getToken = (): string | null => {
+  return token;
 };
 
 // Interface for login credentials
@@ -36,5 +41,5 @@ const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
   }
 };
 
-export { login, setToken };
+export { login, setToken, getToken };
 
