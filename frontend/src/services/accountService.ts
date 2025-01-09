@@ -2,8 +2,9 @@ import axios from "axios";
 
 const loginUrl = "https://backend-wispy-firefly-9646.fly.dev/api/login";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let token: string | null = null;
+
+token = null;
 
 
 // Interface for login credentials
