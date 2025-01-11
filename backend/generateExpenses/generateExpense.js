@@ -1,13 +1,23 @@
 import mongoose from "mongoose";
 import Expense from "../schemas/ExpenseSchema.js";
+import Account from "../schemas/AccountSchema.js";
 
 // MongoDB connection
 mongoose.connect(
   "mongodb+srv://nikolas:Nikolas01@nikolasgustavson.uewwjz3.mongodb.net/Budget?retryWrites=true&w=majority&appName=nikolasgustavson",
-  { useNewUrlParser: true, useUnifiedTopology: true }
-);
+  { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+    getIndexes();
+  })
 
-const categories = [
+const getIndexes = async () => {
+  const indexes = await mongoose.connection.db.collection("Accounts").indexes();
+  indexes.forEach(function (index) {
+    console.log(JSON.stringify(index));
+});
+  
+}
+
+/* const categories = [
   "Savings",
   "Food",
   "Utilities",
@@ -61,3 +71,5 @@ const insertExpenses = async (count) => {
 
 // Insert 1000 expenses
 insertExpenses(1000);
+
+*/
