@@ -115,6 +115,31 @@ interface BudgetCategories {
         legend: {
           show: false
         },
+        responsive: [
+          {
+            breakpoint: 725, // For screens narrower than 725px
+            options: {
+              dataLabels: {
+                enabled: false, // Disable dataLabels
+              },
+              chart: {
+                height: 400, // Adjust height for smaller screens
+              },
+            },
+          },
+          {
+            breakpoint: 909, // For screens wider than 725px
+            options: {
+              dataLabels: {
+                enabled: true, // Enable dataLabels
+              },
+              chart: {
+                height: 500, // Default height
+              },
+            },
+          },
+        ],
+        
       };
     };
   

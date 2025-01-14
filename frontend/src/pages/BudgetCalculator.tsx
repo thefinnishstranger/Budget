@@ -120,52 +120,52 @@ const BudgetCalculator: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-8 m-8">
-        <div>
-          <p className="text-2xl font-bold mb-4 ml-3">Expenses</p>
-          <ul>
-            {Object.keys(budget).map((key) => (
-              <li key={key} className="p-4 border-b-2">
-                <div className="grid grid-cols-2 items-center">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-4 h-4 rounded-full"
-                      style={{ backgroundColor: categoryColors[key as keyof typeof categoryColors] }}
-                    ></div>
-                    <label className="text-left tracking-normal">{key.charAt(0).toUpperCase() + key.slice(1)}</label>
-                  </div>
-                  <div className="relative justify-self-end">
-                    <input
-                      type="number"
-                      value={budget[key as keyof typeof budget] || ""}
-                      onChange={(e) => handleInputChange(e, key)}
-                      onBlur={handleBudgetBlur}
-                      className="pl-8 border-2 border-black text-right w-28 pr-2 rounded font-semibold"
-                    />
-                    <span className="absolute inset-y-0 left-2 flex items-center pointer-events-none">$</span>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 m-8">
+  <div className="flex justify-center items-center order-1 md:order-2">
+    <CalculatorChart
+      savings={chartData.savings}
+      food={chartData.food}
+      utilities={chartData.utilities}
+      housing={chartData.housing}
+      transportation={chartData.transportation}
+      insurance={chartData.insurance}
+      household={chartData.household}
+      debt={chartData.debt}
+      retirement={chartData.retirement}
+      personal={chartData.personal}
+      other={chartData.other}
+    />
+  </div>
+  <div className="order-2 md:order-1">
+    <p className="text-2xl font-bold mb-4 ml-3">Expenses</p>
+    <ul>
+      {Object.keys(budget).map((key) => (
+        <li key={key} className="p-4 border-b-2">
+          <div className="grid grid-cols-2 items-center">
+            <div className="flex items-center gap-2">
+              <div
+                className="w-4 h-4 rounded-full"
+                style={{ backgroundColor: categoryColors[key as keyof typeof categoryColors] }}
+              ></div>
+              <label className="text-left tracking-normal">{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+            </div>
+            <div className="relative justify-self-end">
+              <input
+                type="number"
+                value={budget[key as keyof typeof budget] || ""}
+                onChange={(e) => handleInputChange(e, key)}
+                onBlur={handleBudgetBlur}
+                className="pl-8 border-2 border-black text-right w-28 pr-2 rounded font-semibold"
+              />
+              <span className="absolute inset-y-0 left-2 flex items-center pointer-events-none">$</span>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
 
-        <div className="flex justify-center items-center">
-          <CalculatorChart
-            savings={chartData.savings}
-            food={chartData.food}
-            utilities={chartData.utilities}
-            housing={chartData.housing}
-            transportation={chartData.transportation}
-            insurance={chartData.insurance}
-            household={chartData.household}
-            debt={chartData.debt}
-            retirement={chartData.retirement}
-            personal={chartData.personal}
-            other={chartData.other}
-          />
-        </div>
-      </div>
       <div className="grid grid-cols-3 m-8 pb-5 pt-5">
 
           <div>
