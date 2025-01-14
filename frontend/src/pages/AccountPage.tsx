@@ -114,7 +114,7 @@ const getUsername = () => {
     <div className="bg-white min-h-screen">
 
       {/* Introduction Section */}
-      <div className="p-10 text-center grid grid-cols-2 shadow-md">
+      <div className="p-2 md:p-10 text-center grid grid-cols-1 md:grid-cols-2 shadow-md">
 
         <div className="p-8">
         <h1 className="text-4xl font-extrabold text-gray-800 tracking-tight">
@@ -148,7 +148,7 @@ const getUsername = () => {
       
 
       {/* Monthly Spending Overview */}
-      <div className="text-center p-8 mt-8">
+      <div className="text-center p-4 md:p-8 mt-8">
         <h1 className="text-3xl font-bold text-gray-800 tracking-tight">
           Monthly Spending Overview
         </h1>
@@ -161,8 +161,8 @@ const getUsername = () => {
       </div>
 
       {/* Month Selector */}
-      <div className="flex justify-center mb-8">
-        <label className="text-lg font-semibold mr-3 text-gray-700">Select Month and Year:</label>
+      <div className="flex flex-col md:flex-row justify-center mb-8 m-10 md:m-0">
+        <label className="text-lg font-semibold mr-3 text-gray-700 mb-4 md:mb-0">Select Month and Year:</label>
         <select
           className="border-2 border-gray-300 rounded px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={selectedMonth}
@@ -179,7 +179,7 @@ const getUsername = () => {
           ))}
         </select>
         <select
-          className="border-2 border-gray-300 rounded px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="border-2 border-gray-300 rounded px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 mt-4 md:mt-0"
           value={selectedYear}
           onChange={(e) => setSelectedYear(Number(e.target.value))}
         >
@@ -200,7 +200,7 @@ const getUsername = () => {
       </div>
 
       {/* Biggest Spending Categories and Purchases */}
-      <div className="shadow-md grid grid-cols-1 md:grid-cols-2 bg-slate-100 p-8 mt-24 rounded-lg shadow-sm">
+      <div className="shadow-md grid grid-cols-1 gap-8 bg-slate-100 p-4 md:p-8 mt-16 rounded-lg">
       <div className="p-6 text-center bg-white rounded-lg shadow-md">
   <h2 className="text-3xl font-bold mb-7 text-gray-800">
     Top Spending Categories in {monthNames[selectedMonth]}

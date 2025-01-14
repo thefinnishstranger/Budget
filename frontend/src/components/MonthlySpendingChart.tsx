@@ -62,6 +62,94 @@ const MonthlySpendingChart: React.FC<MonthlySpendingChartProps> = ({ currentYear
       title: { text: `Daily Spending for ${currentYear} - ${currentMonth + 1}`, align: "left" },
       xaxis: { categories: days, title: { text: "Days of the Month" } },
       yaxis: { title: { text: "Amount Spent" } },
+      responsive: [
+        {
+          // For small screens (e.g., phones)
+          breakpoint: 640, // Maximum width in pixels
+          options: {
+            chart: {
+              height: 600, // Reduce chart height
+            },
+            xaxis: {
+              labels: {
+                show: true,
+                style: {
+                  fontSize: "9px", // Smaller font size
+                },
+              },
+            },
+            yaxis: {
+              labels: {
+                style: {
+                  fontSize: "9px",
+                },
+              },
+            },
+            title: {
+              style: {
+                fontSize: "14px",
+              },
+            },
+          },
+        },
+        {
+          // For medium screens (e.g., tablets)
+          breakpoint: 768,
+          options: {
+            chart: {
+              height: 400,
+            },
+            xaxis: {
+              labels: {
+                style: {
+                  fontSize: "12px",
+                },
+              },
+            },
+            yaxis: {
+              labels: {
+                style: {
+                  fontSize: "12px",
+                },
+              },
+            },
+            title: {
+              style: {
+                fontSize: "16px",
+              },
+            },
+          },
+        },
+        {
+          // For larger screens (default settings or desktops)
+          breakpoint: 1024,
+          options: {
+            chart: {
+              height: 500,
+            },
+            xaxis: {
+              labels: {
+                style: {
+                  fontSize: "14px",
+                },
+              },
+            },
+            yaxis: {
+              labels: {
+                style: {
+                  fontSize: "14px",
+                },
+              },
+            },
+            title: {
+              style: {
+                fontSize: "18px",
+              },
+            },
+          },
+        },
+      ],
+      
     };
 
     const chartElement = document.querySelector("#monthly-chart");

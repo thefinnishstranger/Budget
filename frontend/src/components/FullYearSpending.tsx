@@ -50,13 +50,68 @@ const FullYearSpending: React.FC<FullYearSpendingProps> = ({ selectedYear, chart
         text: `Your Monthly Spending in ${selectedYear}`,
         align: "center",
       },
+      dataLabels: {
+        enabled: false, // Default to disabled
+      },
+      responsive: [
+        {
+          breakpoint: 640, // For small screens
+          options: {
+            chart: {
+              height: 400,
+            },
+            dataLabels: {
+              enabled: false, // Keep disabled for small screens
+            },
+            xaxis: {
+              labels: {
+                show: true,
+                style: {
+                  fontSize: "10px", // Smaller font size
+                },
+              },
+            },
+          },
+        },
+        {
+          breakpoint: 1049, // For medium screens
+          options: {
+            dataLabels: {
+              enabled: false, // Keep disabled
+            },
+            xaxis: {
+              labels: {
+                style: {
+                  fontSize: "12px",
+                },
+              },
+            },
+          },
+        },
+        {
+          breakpoint: 1050, // For screens larger than 1049px
+          options: {
+            dataLabels: {
+              enabled: true, // Enable data labels
+            },
+            xaxis: {
+              labels: {
+                style: {
+                  fontSize: "14px", // Standard font size
+                },
+              },
+            },
+          },
+        },
+      ],
     };
-
+  
     const chart = new ApexCharts(document.querySelector("#yearly-chart"), options);
     chart.render();
-
+  
     return () => chart.destroy(); // Clean up the chart on year change
   }, [spending]); // Re-run when `spending` updates
+  
 
   return <div id="yearly-chart" className="py-6"></div>;
 };
